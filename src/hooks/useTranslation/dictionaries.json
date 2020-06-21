@@ -1,0 +1,20 @@
+{
+  "en": {
+    "auth": {
+      "alreadyHaveAccount": "Already have account?",
+      "badUsernamePassword": "Username or password is incorrect",
+      "email": "Email",
+      "error": "ERROR! {{message}}",
+      "forgotPassword": "Forgot password?",
+      "login": "Log In",
+      "password": "Password"
+    },
+    "common": {
+      "loading": "Loading",
+      "submit": "Submit"
+    },
+    "validation": {
+      "required": "{{field}} is required"
+    }
+  }
+}

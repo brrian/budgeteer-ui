@@ -1,0 +1,78 @@
+@import 'styles/helpers';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 20px;
+}
+
+.errors {
+  margin-bottom: 20px;
+  color: $colorRed;
+
+  li {
+    margin-bottom: 8px;
+  }
+}
+
+.form {
+  position: relative;
+  width: 100%;
+  padding: 32px 20px 40px;
+  border: 2px solid $colorDarkGray;
+
+  @include media('>=tablet') {
+    max-width: 360px;
+  }
+}
+
+.formHeading {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  padding: 4px 8px;
+  transform: translate(-50%, -50%);
+  background-color: $colorWhite;
+  font-weight: 600;
+}
+
+.fieldGroup {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.extras {
+  margin-top: 20px;
+}
+
+.formActions {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  width: 100%;
+  transform: translateY(50%);
+
+  > button {
+    margin-right: 4px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
