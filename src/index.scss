@@ -1,6 +1,46 @@
+@import 'styles/reset';
+@import 'styles/helpers.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  color: $colorDarkGray;
+  font-family: $fontFamily;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.2;
+}
+
+input {
+  padding: 4px 4px;
+  border: 1px solid $colorOffWhite;
+  outline: 0;
+  background-color: $colorOffWhite;
+  color: $colorDarkGray;
+  font-family: $fontFamily;
+  font-size: 1em;
+
+  &:focus {
+    border-color: $colorDarkGray;
+  }
+}
+
+a {
+  color: $colorDarkGray;
+
+  &:hover {
+    text-decoration: none;
+  }
 }

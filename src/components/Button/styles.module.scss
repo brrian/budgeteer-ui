@@ -1,0 +1,20 @@
+@import 'styles/helpers';
+
+.button {
+  padding: 6px 10px;
+  border: 2px solid $colorDarkGray;
+  background-color: $colorDarkGray;
+  color: $colorWhite;
+  font-family: $fontFamily;
+  font-size: 1em;
+
+  &:disabled {
+    border-color: $colorGray;
+    background-color: $colorGray;
+  }
+}
+
+.isOutline {
+  background-color: $colorWhite;
+  color: $colorDarkGray;
+}
