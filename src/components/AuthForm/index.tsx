@@ -58,8 +58,8 @@ const AuthForm = <TFormValues extends FormValues = FormValues>({
           <h2 className={styles.formHeading}>{heading}</h2>
           {errors.length > 0 && (
             <ul className={styles.errors}>
-              {errors.map(error => (
-                <li key={error}>{t('error', { message: error })}</li>
+              {errors.map((error, index) => (
+                <li key={`${error}-${index}`}>{t('error', { message: error })}</li>
               ))}
             </ul>
           )}

@@ -1,35 +1,44 @@
 import { Auth } from 'aws-amplify';
 import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
-import { PAGE_FORGOT_PASSWORD, PAGE_TRANSACTIONS } from '../../constants';
+import { PAGE_LOGIN } from '../../constants';
 import useTranslation from '../../hooks/useTranslation';
+import api from '../../util/api';
 
 interface FormValues {
   email: string;
+  group: string;
   password: string;
 }
 
-const LoginPage: FC = () => {
-  const history = useHistory();
-
+const RegisterPage: FC = () => {
   const { t } = useTranslation('auth');
 
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: OnSubmit<FormValues> = async ({ email, password }) => {
+  const handleFormSubmit: OnSubmit<FormValues> = async ({ email, group, password }) => {
     setErrors([]);
     setIsLoading(true);
 
-    const user = await Auth.signIn(email, password).catch(error => {
-      return setErrors([error.message]);
-    });
+    const { isValid } = await api.validateGroup(group);
 
-    if (user) {
-      history.push(PAGE_TRANSACTIONS);
+    if (!isValid) {
+      setIsLoading(false);
+      return setErrors([t('invalidGroup')]);
     }
+
+    await Auth.signUp({
+      username: email,
+      password,
+      attributes: {
+        'custom:groupId': group,
+      },
+    }).catch(error => {
+      setErrors([error.message]);
+    });
 
     setIsLoading(false);
   };
@@ -37,7 +46,7 @@ const LoginPage: FC = () => {
   return (
     <AuthForm<FormValues>
       errors={errors}
-      heading={t('login')}
+      heading={t('register')}
       inputs={[
         {
           name: 'email',
@@ -55,13 +64,20 @@ const LoginPage: FC = () => {
             type: 'password',
           },
         },
+        {
+          name: 'group',
+          label: t('group'),
+          attrs: {
+            required: true,
+          },
+        },
       ]}
       isLoading={isLoading}
       onSubmit={handleFormSubmit}
     >
-      <Link to={PAGE_FORGOT_PASSWORD}>{t('forgotPassword')}</Link>
+      <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
     </AuthForm>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

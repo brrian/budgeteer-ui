@@ -15,7 +15,7 @@ Amplify.configure({
       domain: process.env.REACT_APP_COGNITO_COOKIE_DOMAIN,
       path: '/',
       expires: 365,
-      secure: true,
+      secure: process.env.REACT_APP_COGNITO_SECURE !== 'false',
     },
   },
 });

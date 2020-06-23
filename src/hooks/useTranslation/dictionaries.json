@@ -6,8 +6,11 @@
       "email": "Email",
       "error": "ERROR! {{message}}",
       "forgotPassword": "Forgot password?",
+      "group": "Group",
+      "invalidGroup": "Invalid group",
       "login": "Log In",
-      "password": "Password"
+      "password": "Password",
+      "register": "Register"
     },
     "common": {
       "loading": "Loading",
