@@ -14,7 +14,8 @@
     },
     "common": {
       "loading": "Loading",
-      "submit": "Submit"
+      "submit": "Submit",
+      "updateAvailable": "A new update date is available. Restart?"
     },
     "validation": {
       "required": "{{field}} is required"

@@ -27,8 +27,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "npm run updateServiceWorker",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "updateServiceWorker": "node appendCustomSw.js",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,css,scss}'"
   },
   "eslintConfig": {
