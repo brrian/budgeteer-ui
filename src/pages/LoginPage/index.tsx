@@ -1,10 +1,10 @@
-import { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
 import { PAGE_FORGOT_PASSWORD, PAGE_TRANSACTIONS } from '../../constants';
-import useTranslation from '../../hooks/useTranslation';
+import useTranslation from '../../util/hooks/useTranslation';
 
 interface FormValues {
   email: string;

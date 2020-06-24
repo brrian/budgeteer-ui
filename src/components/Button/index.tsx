@@ -1,6 +1,6 @@
 import cc from 'classcat';
 import React, { ButtonHTMLAttributes, FC } from 'react';
-import useTranslation from '../../hooks/useTranslation';
+import useTranslation from '../../util/hooks/useTranslation';
 import styles from './styles.module.scss';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

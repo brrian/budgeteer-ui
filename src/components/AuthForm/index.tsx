@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { FieldError, FormContext, OnSubmit, useForm } from 'react-hook-form';
-import useTranslation from '../../hooks/useTranslation';
+import useTranslation from '../../util/hooks/useTranslation';
 import Button from '../Button';
 import styles from './styles.module.scss';
 
