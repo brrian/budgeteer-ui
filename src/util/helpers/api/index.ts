@@ -1,5 +1,5 @@
 import Axios, { AxiosInstance } from 'axios';
-import { ValidateGroupResponse } from './models';
+import { FetchGroupResponse, ValidateGroupResponse } from './models';
 
 class Api {
   public client: AxiosInstance;
@@ -12,6 +12,14 @@ class Api {
 
   public setAuthToken = (token: string): void => {
     this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  };
+
+  public fetchGroup = async (): Promise<FetchGroupResponse> => {
+    const { data } = await this.client.get<FetchGroupResponse>(`/groups/me`).catch(error => {
+      throw new Error(`Unable to fetch group: ${error.message}`);
+    });
+
+    return data;
   };
 
   public validateGroup = async (group: string): Promise<ValidateGroupResponse> => {

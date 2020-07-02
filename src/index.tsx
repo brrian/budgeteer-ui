@@ -1,10 +1,11 @@
-import Amplify from 'aws-amplify';
+import Amplify from '@aws-amplify/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
+import { UserContextProvider } from './util/contexts/UserContext';
 
 Amplify.configure({
   Auth: {
@@ -23,7 +24,9 @@ Amplify.configure({
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
