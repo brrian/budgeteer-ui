@@ -2,20 +2,19 @@ import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import AuthForm from '../../components/AuthForm';
-import { PAGE_LOGIN, PAGE_REGISTER_RESEND, PAGE_TRANSACTIONS } from '../../constants';
-import useTranslation from '../../util/hooks/useTranslation';
+import AuthForm from '../../../components/AuthForm';
+import { PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../../constants';
+import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
   email: string;
-  code: string;
 }
 
 interface LocationState {
   email?: string;
 }
 
-const RegisterVerifyPage: FC = () => {
+const ResendVerificationPage: FC = () => {
   const location = useLocation<LocationState>();
   const history = useHistory();
 
@@ -24,19 +23,17 @@ const RegisterVerifyPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: OnSubmit<FormValues> = async ({ email, code }) => {
+  const handleFormSubmit: OnSubmit<FormValues> = async ({ email }) => {
     setErrors([]);
     setIsLoading(true);
 
-    const result = await Auth.confirmSignUp(email, code).catch(error => {
+    await Auth.resendSignUp(email).catch(error => {
       setErrors([error.message]);
     });
 
     setIsLoading(false);
 
-    if (result === 'SUCCESS') {
-      history.push(PAGE_TRANSACTIONS);
-    }
+    history.push(PAGE_REGISTER_VERIFY, { email });
   };
 
   const defaultEmail = location.state?.email;
@@ -47,21 +44,13 @@ const RegisterVerifyPage: FC = () => {
         email: defaultEmail,
       }}
       errors={errors}
-      heading={t('verifyAccount')}
+      heading={t('resendCode')}
       inputs={[
         {
           name: 'email',
           label: t('email'),
           attrs: {
-            autoFocus: !defaultEmail,
-            required: true,
-          },
-        },
-        {
-          name: 'code',
-          label: t('code'),
-          attrs: {
-            autoFocus: !!defaultEmail,
+            autoFocus: true,
             required: true,
           },
         },
@@ -70,20 +59,10 @@ const RegisterVerifyPage: FC = () => {
       onSubmit={handleFormSubmit}
     >
       <p>
-        <Link
-          to={{
-            pathname: PAGE_REGISTER_RESEND,
-            state: { email: defaultEmail },
-          }}
-        >
-          {t('resendVerificationEmail')}
-        </Link>
-      </p>
-      <p>
         <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
       </p>
     </AuthForm>
   );
 };
 
-export default RegisterVerifyPage;
+export default ResendVerificationPage;
