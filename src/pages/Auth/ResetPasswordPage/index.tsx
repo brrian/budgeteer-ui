@@ -49,7 +49,7 @@ const ResetPasswordPage: FC = () => {
         email: defaultEmail,
       }}
       errors={errors}
-      heading={t('forgotPassword')}
+      heading={t('resetPassword')}
       inputs={[
         {
           name: 'email',
