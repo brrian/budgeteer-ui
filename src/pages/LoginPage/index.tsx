@@ -3,7 +3,12 @@ import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
-import { PAGE_FORGOT_PASSWORD, PAGE_TRANSACTIONS } from '../../constants';
+import {
+  PAGE_FORGOT_PASSWORD,
+  PAGE_REGISTER,
+  PAGE_REGISTER_VERIFY,
+  PAGE_TRANSACTIONS,
+} from '../../constants';
 import useTranslation from '../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -24,14 +29,18 @@ const LoginPage: FC = () => {
     setIsLoading(true);
 
     const user = await Auth.signIn(email, password).catch(error => {
+      if (error.message === 'User is not confirmed.') {
+        return history.push(PAGE_REGISTER_VERIFY, { email });
+      }
+
       return setErrors([error.message]);
     });
+
+    setIsLoading(false);
 
     if (user) {
       history.push(PAGE_TRANSACTIONS);
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -59,7 +68,12 @@ const LoginPage: FC = () => {
       isLoading={isLoading}
       onSubmit={handleFormSubmit}
     >
-      <Link to={PAGE_FORGOT_PASSWORD}>{t('forgotPassword')}</Link>
+      <p>
+        <Link to={PAGE_FORGOT_PASSWORD}>{t('forgotPassword')}</Link>
+      </p>
+      <p>
+        <Link to={PAGE_REGISTER}>{t('haventRegistered')}</Link>
+      </p>
     </AuthForm>
   );
 };
