@@ -23,6 +23,10 @@ export default function useServiceWorkerUpdater(): void {
           }
 
           registration.waiting.postMessage('skipWaiting');
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         });
       }
     };
