@@ -5,6 +5,11 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  user-select: none;
+
+  @include media('>tablet') {
+    user-select: auto;
+  }
 }
 
 html,
