@@ -16,6 +16,7 @@
       "register": "Register",
       "resendCode": "Resend code",
       "resendVerificationEmail": "Resend verification email",
+      "resetPassword": "Reset password",
       "verifyAccount": "Verify account"
     },
     "common": {
