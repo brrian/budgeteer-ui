@@ -1,50 +1,35 @@
 import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import AuthForm from '../../components/AuthForm';
-import { PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../constants';
-import useTranslation from '../../util/hooks/useTranslation';
+import { Link } from 'react-router-dom';
+import AuthForm from '../../../components/AuthForm';
+import { PAGE_LOGIN } from '../../../constants';
+import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
   email: string;
 }
 
-interface LocationState {
-  email?: string;
-}
-
-const ResendVerificationPage: FC = () => {
-  const location = useLocation<LocationState>();
-  const history = useHistory();
-
+const ForgotPasswordPage: FC = () => {
   const { t } = useTranslation('auth');
 
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
   const handleFormSubmit: OnSubmit<FormValues> = async ({ email }) => {
-    setErrors([]);
     setIsLoading(true);
 
-    await Auth.resendSignUp(email).catch(error => {
+    await Auth.forgotPassword(email).catch(error => {
       setErrors([error.message]);
     });
 
     setIsLoading(false);
-
-    history.push(PAGE_REGISTER_VERIFY, { email });
   };
-
-  const defaultEmail = location.state?.email;
 
   return (
     <AuthForm<FormValues>
-      defaultValues={{
-        email: defaultEmail,
-      }}
       errors={errors}
-      heading={t('resendCode')}
+      heading={t('forgotPassword')}
       inputs={[
         {
           name: 'email',
@@ -58,11 +43,9 @@ const ResendVerificationPage: FC = () => {
       isLoading={isLoading}
       onSubmit={handleFormSubmit}
     >
-      <p>
-        <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
-      </p>
+      <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
     </AuthForm>
   );
 };
 
-export default ResendVerificationPage;
+export default ForgotPasswordPage;

@@ -7,11 +7,11 @@ import {
   PAGE_REGISTER_RESEND,
   PAGE_REGISTER_VERIFY,
 } from '../../constants';
-import ForgotPasswordPage from '../../pages/ForgotPasswordPage';
-import LoginPage from '../../pages/LoginPage';
-import RegisterPage from '../../pages/RegisterPage';
-import RegisterVerifyPage from '../../pages/RegisterVerifyPage';
-import ResendVerificationPage from '../../pages/ResendVerificationPage';
+import ForgotPasswordPage from '../../pages/Auth/ForgotPasswordPage';
+import LoginPage from '../../pages/Auth/LoginPage';
+import RegisterPage from '../../pages/Auth/RegisterPage';
+import RegisterVerifyPage from '../../pages/Auth/RegisterVerifyPage';
+import ResendVerificationPage from '../../pages/Auth/ResendVerificationPage';
 import TransactionsPage from '../../pages/Transactions';
 import useServiceWorkerUpdater from '../../util/hooks/useServiceWorkerUpdater';
 

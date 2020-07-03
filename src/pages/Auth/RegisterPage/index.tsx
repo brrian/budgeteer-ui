@@ -2,10 +2,10 @@ import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
-import AuthForm from '../../components/AuthForm';
-import { PAGE_FORGOT_PASSWORD, PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../constants';
-import api from '../../util/helpers/api';
-import useTranslation from '../../util/hooks/useTranslation';
+import AuthForm from '../../../components/AuthForm';
+import { PAGE_FORGOT_PASSWORD, PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../../constants';
+import api from '../../../util/helpers/api';
+import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
   email: string;
