@@ -1,5 +1,5 @@
 import { Auth, CognitoUser } from '@aws-amplify/auth';
-import React, { createContext, Dispatch, FC, useEffect, useReducer } from 'react';
+import React, { createContext, Dispatch, FC, useContext, useEffect, useReducer } from 'react';
 import api from '../../helpers/api';
 import { UserActions, UserState } from './models';
 import userReducer from './userReducer';
@@ -11,6 +11,26 @@ const initialState: UserState = {
   isAuthenticated: false,
   isComplete: false,
   user: undefined,
+};
+
+export const useUserDispatch = (): Dispatch<UserActions> => {
+  const context = useContext(UserDispatchContext);
+
+  if (context === undefined) {
+    throw new Error('useUserDispatch must be used within a UserContextProvider');
+  }
+
+  return context;
+};
+
+export const useUserState = (): UserState => {
+  const context = useContext(UserStateContext);
+
+  if (context === undefined) {
+    throw new Error('useUserState must be used within a UserContextProvider');
+  }
+
+  return context;
 };
 
 export const UserContextProvider: FC = ({ children }) => {
