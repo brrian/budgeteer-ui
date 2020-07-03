@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { FieldError, FormContext, OnSubmit, useForm } from 'react-hook-form';
+import { DeepPartial, FieldError, FormContext, OnSubmit, useForm } from 'react-hook-form';
 import useTranslation from '../../util/hooks/useTranslation';
 import Button from '../Button';
 import styles from './styles.module.scss';
@@ -19,6 +19,7 @@ interface Input {
 }
 
 interface AuthFormProps<TFormValues = FormValues> {
+  defaultValues?: DeepPartial<TFormValues>;
   errors?: string[];
   heading: string;
   inputs: Input[];
@@ -28,6 +29,7 @@ interface AuthFormProps<TFormValues = FormValues> {
 
 const AuthForm = <TFormValues extends FormValues = FormValues>({
   children,
+  defaultValues,
   errors: authErrors = [],
   heading,
   inputs,
@@ -36,7 +38,7 @@ const AuthForm = <TFormValues extends FormValues = FormValues>({
 }: PropsWithChildren<AuthFormProps<TFormValues>>): ReactElement => {
   const { t } = useTranslation(['auth', 'validation']);
 
-  const formProps = useForm<TFormValues>();
+  const formProps = useForm<TFormValues>({ defaultValues });
   const { handleSubmit, register } = formProps;
 
   const [formErrors, setFormErrors] = useState<string[]>([]);

@@ -1,9 +1,9 @@
 import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
-import { PAGE_LOGIN } from '../../constants';
+import { PAGE_FORGOT_PASSWORD, PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../constants';
 import api from '../../util/helpers/api';
 import useTranslation from '../../util/hooks/useTranslation';
 
@@ -14,6 +14,8 @@ interface FormValues {
 }
 
 const RegisterPage: FC = () => {
+  const history = useHistory();
+
   const { t } = useTranslation('auth');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +32,7 @@ const RegisterPage: FC = () => {
       return setErrors([t('invalidGroup')]);
     }
 
-    await Auth.signUp({
+    const results = await Auth.signUp({
       username: email,
       password,
       attributes: {
@@ -41,6 +43,10 @@ const RegisterPage: FC = () => {
     });
 
     setIsLoading(false);
+
+    if (results && results.user) {
+      history.push(PAGE_REGISTER_VERIFY, { email });
+    }
   };
 
   return (
@@ -75,7 +81,12 @@ const RegisterPage: FC = () => {
       isLoading={isLoading}
       onSubmit={handleFormSubmit}
     >
-      <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
+      <p>
+        <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
+      </p>
+      <p>
+        <Link to={PAGE_FORGOT_PASSWORD}>{t('forgotPassword')}</Link>
+      </p>
     </AuthForm>
   );
 };

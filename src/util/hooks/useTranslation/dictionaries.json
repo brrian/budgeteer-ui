@@ -1,16 +1,21 @@
 {
   "en": {
     "auth": {
-      "alreadyHaveAccount": "Already have account?",
+      "alreadyHaveAccount": "Already have an account?",
       "badUsernamePassword": "Username or password is incorrect",
+      "code": "Code",
       "email": "Email",
       "error": "ERROR! {{message}}",
       "forgotPassword": "Forgot password?",
       "group": "Group",
+      "haventRegistered": "Need an account?",
       "invalidGroup": "Invalid group",
       "login": "Log In",
       "password": "Password",
-      "register": "Register"
+      "register": "Register",
+      "resendCode": "Resend code",
+      "resendVerificationEmail": "Resend verification email",
+      "verifyAccount": "Verify account"
     },
     "common": {
       "loading": "Loading",
