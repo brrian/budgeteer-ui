@@ -24,13 +24,13 @@ const App: FC = () => {
 
   return (
     <Switch>
-      <Route path={PAGE_LOGIN} component={LoginPage} />
-      <Route path={PAGE_LOGOUT} component={LogoutPage} />
-      <Route path={PAGE_RESET_PASSWORD} component={ResetPasswordPage} />
-      <Route path={PAGE_FORGOT_PASSWORD} component={ForgotPasswordPage} />
-      <Route path={PAGE_REGISTER_RESEND} component={ResendVerificationPage} />
-      <Route path={PAGE_REGISTER_VERIFY} component={RegisterVerifyPage} />
-      <Route path={PAGE_REGISTER} component={RegisterPage} />
+      <Route path={PAGE_FORGOT_PASSWORD} component={ForgotPasswordPage} exact />
+      <Route path={PAGE_LOGIN} component={LoginPage} exact />
+      <Route path={PAGE_LOGOUT} component={LogoutPage} exact />
+      <Route path={PAGE_REGISTER_RESEND} component={ResendVerificationPage} exact />
+      <Route path={PAGE_REGISTER_VERIFY} component={RegisterVerifyPage} exact />
+      <Route path={PAGE_REGISTER} component={RegisterPage} exact />
+      <Route path={PAGE_RESET_PASSWORD} component={ResetPasswordPage} exact />
       <Route path="/" component={TransactionsPage} />
     </Switch>
   );
