@@ -6,12 +6,14 @@ import {
   PAGE_REGISTER,
   PAGE_REGISTER_RESEND,
   PAGE_REGISTER_VERIFY,
+  PAGE_RESET_PASSWORD,
 } from '../../constants';
 import ForgotPasswordPage from '../../pages/Auth/ForgotPasswordPage';
 import LoginPage from '../../pages/Auth/LoginPage';
 import RegisterPage from '../../pages/Auth/RegisterPage';
 import RegisterVerifyPage from '../../pages/Auth/RegisterVerifyPage';
 import ResendVerificationPage from '../../pages/Auth/ResendVerificationPage';
+import ResetPasswordPage from '../../pages/Auth/ResetPasswordPage';
 import TransactionsPage from '../../pages/Transactions';
 import useServiceWorkerUpdater from '../../util/hooks/useServiceWorkerUpdater';
 
@@ -21,6 +23,7 @@ const App: FC = () => {
   return (
     <Switch>
       <Route path={PAGE_LOGIN} component={LoginPage} />
+      <Route path={PAGE_RESET_PASSWORD} component={ResetPasswordPage} />
       <Route path={PAGE_FORGOT_PASSWORD} component={ForgotPasswordPage} />
       <Route path={PAGE_REGISTER_RESEND} component={ResendVerificationPage} />
       <Route path={PAGE_REGISTER_VERIFY} component={RegisterVerifyPage} />

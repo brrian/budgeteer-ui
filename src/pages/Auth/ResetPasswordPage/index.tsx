@@ -3,24 +3,20 @@ import React, { FC, useState } from 'react';
 import { OnSubmit } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
-import {
-  PAGE_FORGOT_PASSWORD,
-  PAGE_REGISTER,
-  PAGE_REGISTER_VERIFY,
-  PAGE_TRANSACTIONS,
-} from '../../../constants';
+import { PAGE_LOGIN } from '../../../constants';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
+  code: string;
   email: string;
-  password: string;
+  newPassword: string;
 }
 
 interface LocationState {
   email: string;
 }
 
-const LoginPage: FC = () => {
+const ResetPasswordPage: FC = () => {
   const location = useLocation<LocationState>();
   const history = useHistory();
 
@@ -29,22 +25,19 @@ const LoginPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: OnSubmit<FormValues> = async ({ email, password }) => {
-    setErrors([]);
+  const handleFormSubmit: OnSubmit<FormValues> = async ({ code, email, newPassword }) => {
     setIsLoading(true);
 
-    const user = await Auth.signIn(email, password).catch(error => {
-      if (error.message === 'User is not confirmed.') {
-        return history.push(PAGE_REGISTER_VERIFY, { email });
-      }
+    const hasError = await Auth.forgotPasswordSubmit(email, code, newPassword).catch(error => {
+      setErrors([error.message]);
 
-      return setErrors([error.message]);
+      return true;
     });
 
     setIsLoading(false);
 
-    if (user) {
-      history.push(PAGE_TRANSACTIONS);
+    if (!hasError) {
+      history.push(PAGE_LOGIN, { email });
     }
   };
 
@@ -56,19 +49,27 @@ const LoginPage: FC = () => {
         email: defaultEmail,
       }}
       errors={errors}
-      heading={t('login')}
+      heading={t('forgotPassword')}
       inputs={[
         {
           name: 'email',
           label: t('email'),
           attrs: {
-            autoFocus: true,
+            autoFocus: !defaultEmail,
             required: true,
           },
         },
         {
-          name: 'password',
-          label: t('password'),
+          name: 'code',
+          label: t('code'),
+          attrs: {
+            autoFocus: !!defaultEmail,
+            required: true,
+          },
+        },
+        {
+          name: 'newPassword',
+          label: t('newPassword'),
           attrs: {
             required: true,
             type: 'password',
@@ -78,14 +79,9 @@ const LoginPage: FC = () => {
       isLoading={isLoading}
       onSubmit={handleFormSubmit}
     >
-      <p>
-        <Link to={PAGE_FORGOT_PASSWORD}>{t('forgotPassword')}</Link>
-      </p>
-      <p>
-        <Link to={PAGE_REGISTER}>{t('haventRegistered')}</Link>
-      </p>
+      <Link to={PAGE_LOGIN}>{t('alreadyHaveAccount')}</Link>
     </AuthForm>
   );
 };
 
-export default LoginPage;
+export default ResetPasswordPage;
