@@ -33,33 +33,33 @@ export const useUserState = (): UserState => {
   return context;
 };
 
+export const getCurrentUser = async (dispatch: Dispatch<UserActions>): Promise<void> => {
+  const user: CognitoUser | undefined = await Auth.currentAuthenticatedUser().catch(error => {
+    console.error('Unable to get current user', error);
+  });
+
+  const session = user?.getSignInUserSession();
+
+  if (!session || !user) {
+    return dispatch({ type: 'unsetUser' });
+  }
+
+  const token = session.getIdToken().getJwtToken();
+
+  dispatch({
+    type: 'setUser',
+    payload: user,
+  });
+
+  api.setAuthToken(token);
+};
+
 export const UserContextProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
   useEffect(() => {
-    const getCurrentUser = async () => {
-      const user: CognitoUser | undefined = await Auth.currentAuthenticatedUser().catch(error => {
-        console.error('Unable to get current user', error);
-      });
-
-      const session = user?.getSignInUserSession();
-
-      if (!session || !user) {
-        return dispatch({ type: 'unsetUser' });
-      }
-
-      const token = session.getIdToken().getJwtToken();
-
-      dispatch({
-        type: 'setUser',
-        payload: user,
-      });
-
-      api.setAuthToken(token);
-    };
-
-    getCurrentUser();
-  }, []);
+    getCurrentUser(dispatch);
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchGroup = async () => {

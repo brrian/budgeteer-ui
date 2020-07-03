@@ -9,6 +9,7 @@ import {
   PAGE_REGISTER_VERIFY,
   PAGE_TRANSACTIONS,
 } from '../../../constants';
+import { getCurrentUser, useUserDispatch } from '../../../util/contexts/UserContext';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -18,6 +19,7 @@ interface FormValues {
 
 interface LocationState {
   email: string;
+  redirect: string;
 }
 
 const LoginPage: FC = () => {
@@ -25,6 +27,8 @@ const LoginPage: FC = () => {
   const history = useHistory();
 
   const { t } = useTranslation('auth');
+
+  const userDispatch = useUserDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
@@ -44,7 +48,11 @@ const LoginPage: FC = () => {
     setIsLoading(false);
 
     if (user) {
-      history.push(PAGE_TRANSACTIONS);
+      const route = location.state?.redirect ?? PAGE_TRANSACTIONS;
+
+      await getCurrentUser(userDispatch);
+
+      history.push(route);
     }
   };
 
