@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import {
   PAGE_FORGOT_PASSWORD,
   PAGE_LOGIN,
+  PAGE_LOGOUT,
   PAGE_REGISTER,
   PAGE_REGISTER_RESEND,
   PAGE_REGISTER_VERIFY,
@@ -10,6 +11,7 @@ import {
 } from '../../constants';
 import ForgotPasswordPage from '../../pages/Auth/ForgotPasswordPage';
 import LoginPage from '../../pages/Auth/LoginPage';
+import LogoutPage from '../../pages/Auth/LogoutPage';
 import RegisterPage from '../../pages/Auth/RegisterPage';
 import RegisterVerifyPage from '../../pages/Auth/RegisterVerifyPage';
 import ResendVerificationPage from '../../pages/Auth/ResendVerificationPage';
@@ -23,6 +25,7 @@ const App: FC = () => {
   return (
     <Switch>
       <Route path={PAGE_LOGIN} component={LoginPage} />
+      <Route path={PAGE_LOGOUT} component={LogoutPage} />
       <Route path={PAGE_RESET_PASSWORD} component={ResetPasswordPage} />
       <Route path={PAGE_FORGOT_PASSWORD} component={ForgotPasswordPage} />
       <Route path={PAGE_REGISTER_RESEND} component={ResendVerificationPage} />
