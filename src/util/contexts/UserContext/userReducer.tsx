@@ -14,6 +14,9 @@ const userReducer: Reducer<UserState, UserActions> = (state, action) => {
     case 'setUser': {
       return {
         ...state,
+        group: undefined,
+        isAuthenticated: false,
+        isComplete: false,
         user: action.payload,
       };
     }
