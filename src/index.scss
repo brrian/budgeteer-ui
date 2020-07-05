@@ -1,5 +1,5 @@
 @import 'styles/reset';
-@import 'styles/helpers.scss';
+@import 'styles/helpers';
 
 *,
 *::before,
@@ -18,9 +18,32 @@ body,
   height: 100%;
 }
 
+html {
+  --color-bg: #{$colorWhite};
+  --color-border: #{$colorGray800};
+  --color-borderAlt: #{$colorGray800};
+  --color-link: #{$colorGray800};
+  --color-text: #{$colorGray800};
+  --color-textAlt: #{$colorGray400};
+  --color-progressBarBg: #{$colorGray100};
+  --color-progressBarBorder: #{$colorGray800};
+
+  &[data-theme='dark'] {
+    --color-bg: #{$colorGray800};
+    --color-border: #{$colorGray500};
+    --color-borderAlt: #{$colorGray900};
+    --color-link: #{$colorGray50};
+    --color-text: #{$colorGray200};
+    --color-textAlt: #{$colorGray700};
+    --color-progressBarBg: #{$colorGray700};
+    --color-progressBarBorder: transparent;
+  }
+}
+
 body {
   margin: 0;
-  color: $colorDarkGray;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: $fontFamily;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
@@ -30,15 +53,15 @@ body {
 
 input {
   padding: 4px 4px;
-  border: 1px solid $colorOffWhite;
+  border: 1px solid $colorGray100;
   outline: 0;
-  background-color: $colorOffWhite;
-  color: $colorDarkGray;
+  background-color: $colorGray100;
+  color: $colorGray800;
   font-family: $fontFamily;
   font-size: 1em;
 
   &:focus {
-    border-color: $colorDarkGray;
+    border-color: $colorGray800;
   }
 }
 
@@ -47,7 +70,7 @@ p {
 }
 
 a {
-  color: $colorDarkGray;
+  color: var(--color-link);
 
   &:hover {
     text-decoration: none;

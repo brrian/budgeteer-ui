@@ -21,7 +21,7 @@
   position: relative;
   width: 100%;
   padding: 32px 20px 40px;
-  border: 2px solid $colorDarkGray;
+  border: 2px solid var(--color-borderAlt);
 
   @include media('>=tablet') {
     max-width: 360px;
@@ -34,7 +34,7 @@
   left: 50%;
   padding: 4px 8px;
   transform: translate(-50%, -50%);
-  background-color: $colorWhite;
+  background-color: var(--color-bg);
   font-weight: 600;
   white-space: nowrap;
 }
