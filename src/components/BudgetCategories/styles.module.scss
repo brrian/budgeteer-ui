@@ -1,0 +1,73 @@
+@import 'styles/helpers';
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+
+  @include media('>tablet') {
+    justify-content: center;
+    height: auto;
+    margin-bottom: 8px;
+  }
+}
+
+.monthLabel {
+  @include media('>tablet') {
+    display: none;
+  }
+}
+
+.categories {
+  margin-top: 12px;
+
+  @include media('>tablet') {
+    margin-top: 0;
+  }
+}
+
+.category {
+  margin-bottom: 20px;
+}
+
+.progressContainer {
+  position: relative;
+  height: 12px;
+  overflow: hidden;
+  border: 1px solid $colorDarkGray;
+  background-color: $colorOffWhite;
+}
+
+.progressBar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-right: 1px solid $colorDarkGray;
+
+  &[data-color='under'] {
+    background-color: $colorGreen;
+  }
+
+  &[data-color='close'] {
+    background-color: $colorYellow;
+  }
+
+  &[data-color='over'] {
+    background-color: $colorRed;
+  }
+}
+
+.dateMarker {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background-color: $colorDarkGray;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}

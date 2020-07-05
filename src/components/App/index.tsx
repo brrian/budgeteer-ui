@@ -16,7 +16,7 @@ import RegisterPage from '../../pages/Auth/RegisterPage';
 import RegisterVerifyPage from '../../pages/Auth/RegisterVerifyPage';
 import ResendVerificationPage from '../../pages/Auth/ResendVerificationPage';
 import ResetPasswordPage from '../../pages/Auth/ResetPasswordPage';
-import TransactionsPage from '../../pages/Transactions';
+import TransactionsPage from '../../pages/TransactionsPage';
 import useServiceWorkerUpdater from '../../util/hooks/useServiceWorkerUpdater';
 
 const App: FC = () => {

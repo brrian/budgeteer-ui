@@ -1,0 +1,47 @@
+@import 'styles/helpers';
+
+.container {
+  --container-padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  max-width: 1068px;
+  margin: 0 auto;
+
+  @include media('>tablet') {
+    flex-direction: row;
+    padding: 80px 0 40px;
+  }
+}
+
+.budget {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  padding: 0 12px;
+  overflow: hidden;
+  border-bottom: 2px solid $colorDarkGray;
+  background-color: $colorWhite;
+
+  @include media('>tablet') {
+    position: sticky;
+    top: 20px;
+    order: 1;
+    width: 300px;
+    margin-right: var(--container-padding);
+    padding: 0;
+    overflow: visible;
+    border-bottom: 0;
+  }
+}
+
+.transactions {
+  position: relative;
+  flex: 1;
+
+  @include media('>tablet') {
+    top: 0 !important;
+    width: calc(100% - 300px - var(--container-padding));
+    padding-right: var(--container-padding);
+  }
+}
