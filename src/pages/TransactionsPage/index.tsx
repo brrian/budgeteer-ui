@@ -1,7 +1,8 @@
-import React, { FC, useRef } from 'react';
+import React, { ChangeEvent, FC, useRef } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
 import Transaction from '../../components/Transaction';
+import { getTheme, setTheme } from '../../util/helpers/theme';
 import useAuth from '../../util/hooks/useAuth';
 import mockTransactions from './mockTransactions';
 import styles from './styles.module.scss';
@@ -46,6 +47,12 @@ const TransactionsPage: FC = () => {
     isExpanded.current = !isExpanded.current;
   };
 
+  const handleThemeToggle = (event: ChangeEvent<HTMLInputElement>) => {
+    const theme = event.currentTarget.checked ? 'dark' : 'light';
+
+    setTheme(theme);
+  };
+
   return auth.isReady ? (
     <div className={styles.container}>
       <animated.div
@@ -58,9 +65,20 @@ const TransactionsPage: FC = () => {
         <BudgetCategories />
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
-        {mockTransactions.map((transaction, index) => (
-          <Transaction {...transaction} key={index} />
-        ))}
+        <>
+          {mockTransactions.map((transaction, index) => (
+            <Transaction {...transaction} key={index} />
+          ))}
+
+          <label className={styles.tempDarkModeContainer}>
+            <input
+              defaultChecked={getTheme() === 'dark'}
+              onChange={handleThemeToggle}
+              type="checkbox"
+            />
+            Dark mode
+          </label>
+        </>
       </animated.div>
     </div>
   ) : (

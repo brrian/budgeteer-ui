@@ -6,6 +6,7 @@ import App from './components/App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import { UserContextProvider } from './util/contexts/UserContext';
+import { initTheme } from './util/helpers/theme';
 
 Amplify.configure({
   Auth: {
@@ -23,6 +24,8 @@ Amplify.configure({
         : undefined,
   },
 });
+
+initTheme();
 
 ReactDOM.render(
   <React.StrictMode>
