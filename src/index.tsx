@@ -12,12 +12,15 @@ Amplify.configure({
     region: process.env.REACT_APP_COGNITO_REGION,
     userPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
     userPoolWebClientId: process.env.REACT_APP_COGNITO_USER_POOL_CLIENT_ID,
-    cookieStorage: {
-      domain: process.env.REACT_APP_COGNITO_COOKIE_DOMAIN,
-      path: '/',
-      expires: 365,
-      secure: process.env.REACT_APP_COGNITO_SECURE !== 'false',
-    },
+    cookieStorage:
+      process.env.REACT_APP_COGNITO_USE_COOKIE !== 'false'
+        ? {
+            domain: process.env.REACT_APP_COGNITO_COOKIE_DOMAIN,
+            path: '/',
+            expires: 365,
+            secure: process.env.REACT_APP_COGNITO_SECURE !== 'false',
+          }
+        : undefined,
   },
 });
 
