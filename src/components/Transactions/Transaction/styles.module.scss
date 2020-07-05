@@ -1,0 +1,86 @@
+@import 'styles/helpers';
+
+.transactionContainer {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px dotted var(--color-borderAlt);
+}
+
+.transaction {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--color-bg);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  @include media('>tablet') {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+.swipeActions {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+  background-color: $colorGray900;
+  color: $colorGray50;
+
+  &[data-orientation='right'] {
+    justify-content: flex-end;
+  }
+
+  &[data-color='red'] {
+    background-color: $colorRed;
+  }
+
+  &[data-color='green'] {
+    background-color: $colorGreen;
+  }
+
+  &[data-color='blue'] {
+    background-color: $colorBlue;
+  }
+}
+
+.disabled {
+  color: var(--color-textAlt);
+}
+
+.date {
+  width: 48px;
+  margin-right: 12px;
+  text-align: center;
+}
+
+.content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.description {
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.amount {
+  margin-left: 24px;
+}

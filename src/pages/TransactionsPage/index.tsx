@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useRef } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
-import Transaction from '../../components/Transaction';
+import Transactions from '../../components/Transactions';
 import { getTheme, setTheme } from '../../util/helpers/theme';
 import useAuth from '../../util/hooks/useAuth';
 import mockTransactions from './mockTransactions';
@@ -42,7 +42,7 @@ const TransactionsPage: FC = () => {
 
     set({ height: newValue });
 
-    navigator.vibrate(70);
+    navigator.vibrate?.(70);
 
     isExpanded.current = !isExpanded.current;
   };
@@ -66,9 +66,7 @@ const TransactionsPage: FC = () => {
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
         <>
-          {mockTransactions.map((transaction, index) => (
-            <Transaction {...transaction} key={index} />
-          ))}
+          <Transactions transactions={mockTransactions} />
 
           <label className={styles.tempDarkModeContainer}>
             <input
