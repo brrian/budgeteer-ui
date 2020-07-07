@@ -1,0 +1,12 @@
+@import 'styles/helpers';
+
+@include pulse;
+
+.placeholder {
+  display: inline-block;
+  min-width: 20px;
+  animation: pulse 1s ease-in infinite;
+  border-radius: 2px;
+  background-color: var(--color-placeholder);
+  color: var(--color-placeholder);
+}

@@ -53,7 +53,7 @@ const TransactionsPage: FC = () => {
     setTheme(theme);
   };
 
-  return auth.isReady ? (
+  return (
     <div className={styles.container}>
       <animated.div
         className={styles.budget}
@@ -62,12 +62,11 @@ const TransactionsPage: FC = () => {
         onTouchStart={handleBudgetTouchStart}
         style={{ height }}
       >
-        <BudgetCategories />
+        <BudgetCategories categories={auth.isReady ? [] : undefined} />
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
         <>
           <Transactions transactions={mockTransactions} />
-
           <label className={styles.tempDarkModeContainer}>
             <input
               defaultChecked={getTheme() === 'dark'}
@@ -79,8 +78,6 @@ const TransactionsPage: FC = () => {
         </>
       </animated.div>
     </div>
-  ) : (
-    <div>Loading...</div>
   );
 };
 
