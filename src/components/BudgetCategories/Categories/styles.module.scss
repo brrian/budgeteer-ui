@@ -1,0 +1,9 @@
+@import 'styles/helpers';
+
+.categories {
+  margin-top: 12px;
+
+  @include media('>tablet') {
+    margin-top: 0;
+  }
+}

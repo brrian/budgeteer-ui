@@ -1,31 +1,6 @@
 @import 'styles/helpers';
 
-.heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40px;
-
-  @include media('>tablet') {
-    justify-content: center;
-    height: auto;
-    margin-bottom: 8px;
-  }
-}
-
-.monthLabel {
-  @include media('>tablet') {
-    display: none;
-  }
-}
-
-.categories {
-  margin-top: 12px;
-
-  @include media('>tablet') {
-    margin-top: 0;
-  }
-}
+@include pulse;
 
 .category {
   margin-bottom: 20px;
@@ -37,6 +12,12 @@
   overflow: hidden;
   border: 1px solid var(--color-progressBarBorder);
   background-color: var(--color-progressBarBg);
+
+  &.isLoading {
+    animation: pulse 1s ease-in infinite;
+    border-color: var(--color-placeholder);
+    background-color: var(--color-placeholder);
+  }
 }
 
 .progressBar {
