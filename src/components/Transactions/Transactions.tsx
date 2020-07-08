@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Transaction as ITransaction } from './models';
-import Transaction from './Transaction';
+import Transaction, { TransactionPlaceholder } from './Transaction';
 
 interface TransactionProps {
-  transactions: ITransaction[];
+  transactions?: ITransaction[];
 }
 
 const Transactions: FC<TransactionProps> = ({ transactions }) => {
@@ -18,14 +18,16 @@ const Transactions: FC<TransactionProps> = ({ transactions }) => {
 
   return (
     <div>
-      {transactions.map((transaction, index) => (
-        <Transaction
-          {...transaction}
-          key={index}
-          mode={isTouchDevice ? 'swipe' : 'hover'}
-          onAction={handleTransactionAction}
-        />
-      ))}
+      {transactions
+        ? transactions.map((transaction, index) => (
+            <Transaction
+              {...transaction}
+              key={index}
+              mode={isTouchDevice ? 'swipe' : 'hover'}
+              onAction={handleTransactionAction}
+            />
+          ))
+        : [...Array(12)].map((item, index) => <TransactionPlaceholder key={index} />)}
     </div>
   );
 };

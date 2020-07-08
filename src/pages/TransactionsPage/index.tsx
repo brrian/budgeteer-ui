@@ -66,15 +66,17 @@ const TransactionsPage: FC = () => {
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
         <>
-          <Transactions transactions={mockTransactions} />
-          <label className={styles.tempDarkModeContainer}>
-            <input
-              defaultChecked={getTheme() === 'dark'}
-              onChange={handleThemeToggle}
-              type="checkbox"
-            />
-            Dark mode
-          </label>
+          <Transactions transactions={auth.isReady ? mockTransactions : undefined} />
+          {auth.isReady && (
+            <label className={styles.tempDarkModeContainer}>
+              <input
+                defaultChecked={getTheme() === 'dark'}
+                onChange={handleThemeToggle}
+                type="checkbox"
+              />
+              Dark mode
+            </label>
+          )}
         </>
       </animated.div>
     </div>
