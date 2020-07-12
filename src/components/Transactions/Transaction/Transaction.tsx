@@ -102,7 +102,7 @@ const Transaction: FC<TransactionProps> = ({
           ))}
         </div>
       </animated.div>
-      {mode === 'swipe' && (
+      {mode === 'swipe' ? (
         <div
           className={styles.swipeActions}
           data-color={currentAction?.color}
@@ -110,7 +110,19 @@ const Transaction: FC<TransactionProps> = ({
         >
           {!!currentAction?.type && t(currentAction.type)}
         </div>
-      )}
+      ) : mode === 'hover' ? (
+        <div className={styles.hoverActions}>
+          {actions.map(action => (
+            <button
+              data-color={action.color}
+              key={action.type}
+              onClick={() => onAction(action.type)}
+            >
+              {t(action.type)}
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };

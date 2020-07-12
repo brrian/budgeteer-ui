@@ -11,15 +11,6 @@ export interface Action {
 const actions: Action[] = [
   {
     breakpoints: {
-      min: 150,
-      max: Infinity,
-    },
-    color: 'green',
-    orientation: 'left',
-    type: 'split',
-  },
-  {
-    breakpoints: {
       min: 80,
       max: 150,
     },
@@ -29,12 +20,21 @@ const actions: Action[] = [
   },
   {
     breakpoints: {
+      min: 150,
+      max: Infinity,
+    },
+    color: 'green',
+    orientation: 'left',
+    type: 'split',
+  },
+  {
+    breakpoints: {
       min: -Infinity,
       max: -80,
     },
-    color: 'red',
+    color: 'purple',
     orientation: 'right',
-    type: 'disable',
+    type: 'toggle',
   },
 ];
 
