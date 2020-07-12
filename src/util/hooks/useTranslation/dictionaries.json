@@ -20,11 +20,11 @@
       "verifyAccount": "Verify account"
     },
     "common": {
-      "disable": "Disable",
       "edit": "Edit",
       "loading": "Loading",
       "split": "Split",
       "submit": "Submit",
+      "toggle": "Toggle",
       "updateAvailable": "A new update date is available. Restart?"
     },
     "validation": {
