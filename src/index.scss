@@ -23,22 +23,28 @@ html {
   --color-border: #{$colorGray800};
   --color-borderAlt: #{$colorGray800};
   --color-link: #{$colorGray800};
-  --color-text: #{$colorGray800};
-  --color-textAlt: #{$colorGray400};
+  --color-popupBg: #{$colorGray50};
+  --color-popupOverlay: rgba(#{rgb($colorWhite)}, 0.8);
+  --color-popupShadow: #{$colorGray700};
   --color-placeholder: #{$colorGray300};
   --color-progressBarBg: #{$colorGray100};
   --color-progressBarBorder: #{$colorGray800};
+  --color-text: #{$colorGray800};
+  --color-textAlt: #{$colorGray400};
 
   &[data-theme='dark'] {
     --color-bg: #{$colorGray800};
     --color-border: #{$colorGray500};
     --color-borderAlt: #{$colorGray900};
     --color-link: #{$colorGray50};
-    --color-text: #{$colorGray200};
-    --color-textAlt: #{$colorGray700};
+    --color-popupBg: #{$colorGray700};
+    --color-popupShadow: #{$colorGray900};
+    --color-popupOverlay: rgba(#{rgb($colorGray800)}, 0.8);
     --color-placeholder: #{$colorGray700};
     --color-progressBarBg: #{$colorGray700};
     --color-progressBarBorder: transparent;
+    --color-text: #{$colorGray200};
+    --color-textAlt: #{$colorGray700};
   }
 }
 

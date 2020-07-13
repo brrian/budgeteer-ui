@@ -113,13 +113,11 @@ const Transaction: FC<TransactionProps> = ({
       ) : mode === 'hover' ? (
         <div className={styles.hoverActions}>
           {actions.map(action => (
-            <button
-              data-color={action.color}
-              key={action.type}
-              onClick={() => onAction(action.type)}
-            >
-              {t(action.type)}
-            </button>
+            <div className={styles.action} key={action.type}>
+              <button data-color={action.color} onClick={() => onAction(action.type)}>
+                {t(action.type)}
+              </button>
+            </div>
           ))}
         </div>
       ) : null}
