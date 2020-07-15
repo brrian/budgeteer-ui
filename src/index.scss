@@ -23,10 +23,12 @@ html {
   --color-border: #{$colorGray800};
   --color-borderAlt: #{$colorGray800};
   --color-link: #{$colorGray800};
+  --color-modalOverlay: rgba(#{rgb($colorGray900)}, 0.8);
+  --color-modalShadow: #{$colorGray900};
+  --color-placeholder: #{$colorGray300};
   --color-popupBg: #{$colorGray50};
   --color-popupOverlay: rgba(#{rgb($colorWhite)}, 0.8);
   --color-popupShadow: #{$colorGray700};
-  --color-placeholder: #{$colorGray300};
   --color-progressBarBg: #{$colorGray100};
   --color-progressBarBorder: #{$colorGray800};
   --color-text: #{$colorGray800};
