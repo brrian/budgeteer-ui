@@ -20,6 +20,7 @@
       "verifyAccount": "Verify account"
     },
     "common": {
+      "addSplit": "Add split",
       "edit": "Edit",
       "loading": "Loading",
       "split": "Split",

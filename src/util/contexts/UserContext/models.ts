@@ -1,7 +1,8 @@
 import { CognitoUser } from '@aws-amplify/auth';
-import { FetchGroupResponse as Group } from '../../helpers/api/models';
+import { Categories, FetchGroupResponse as Group } from '../../helpers/api/models';
 
 export interface UserState {
+  categories: Categories;
   group?: Group;
   isAuthenticated: boolean;
   isComplete: boolean;

@@ -1,16 +1,13 @@
 import React, { FC } from 'react';
-import { Transaction as ITransaction } from './models';
+import { Transaction as ITransaction } from '../../util/helpers/api/models';
 import Transaction, { TransactionPlaceholder } from './Transaction';
 
 interface TransactionProps {
+  onAction: (action: string, index: number) => void;
   transactions?: ITransaction[];
 }
 
-const Transactions: FC<TransactionProps> = ({ transactions }) => {
-  const handleTransactionAction = (action: string) => {
-    window.alert(`Do action: ${action}`);
-  };
-
+const Transactions: FC<TransactionProps> = ({ transactions, onAction }) => {
   const isTouchDevice =
     !!window.ontouchstart ||
     !!window.navigator.maxTouchPoints ||
@@ -24,7 +21,7 @@ const Transactions: FC<TransactionProps> = ({ transactions }) => {
               {...transaction}
               key={index}
               mode={isTouchDevice ? 'swipe' : 'hover'}
-              onAction={handleTransactionAction}
+              onAction={action => onAction(action, index)}
             />
           ))
         : [...Array(12)].map((item, index) => <TransactionPlaceholder key={index} />)}
