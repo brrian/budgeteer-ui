@@ -2,10 +2,10 @@ import cc from 'classcat';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
+import { useUserState } from '../../../util/contexts/UserContext';
+import { Transaction as ITransaction } from '../../../util/helpers/api/models';
 import useTranslation from '../../../util/hooks/useTranslation';
-import { Transaction as ITransaction } from '../models';
 import actions, { Action } from '../util/actions';
-import categories from './mockCategories';
 import styles from './styles.module.scss';
 
 interface TransactionProps extends ITransaction {
@@ -25,6 +25,8 @@ const Transaction: FC<TransactionProps> = ({
   splits,
 }) => {
   const { t } = useTranslation();
+
+  const { categories } = useUserState();
 
   const isFullyDisabled = useMemo(() => {
     return disabled && splits.every(split => split.disabled);

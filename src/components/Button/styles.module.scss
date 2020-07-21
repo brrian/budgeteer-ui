@@ -4,7 +4,7 @@
   padding: 6px 10px;
   border: 2px solid var(--color-borderAlt);
   background-color: var(--color-borderAlt);
-  color: $colorWhite;
+  color: var(--color-text);
   font-family: $fontFamily;
   font-size: 1em;
 
@@ -17,4 +17,17 @@
 .isOutline {
   background-color: var(--color-bg);
   color: var(--color-text);
+}
+
+.isLink {
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
 }

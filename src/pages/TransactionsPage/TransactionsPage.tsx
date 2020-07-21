@@ -1,9 +1,12 @@
-import React, { ChangeEvent, FC, useRef } from 'react';
+import React, { ChangeEvent, FC, useRef, useState } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
 import Transactions from '../../components/Transactions';
+import UpdateTransactionModal from '../../components/UpdateTransactionModal';
+import { Transaction } from '../../util/helpers/api/models';
 import { getTheme, setTheme } from '../../util/helpers/theme';
 import useAuth from '../../util/hooks/useAuth';
+import useModal from '../../util/hooks/useModal';
 import mockTransactions from './mockTransactions';
 import styles from './styles.module.scss';
 
@@ -13,8 +16,12 @@ const EXPANDED_HEIGHT = 286;
 const TransactionsPage: FC = () => {
   const auth = useAuth();
 
+  const modalProps = useModal();
+
   const isExpanded = useRef(false);
   const longPressRef = useRef<number>();
+
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction>();
 
   const [{ height }, set] = useSpring(() => ({
     config: config.stiff,
@@ -47,6 +54,12 @@ const TransactionsPage: FC = () => {
     isExpanded.current = !isExpanded.current;
   };
 
+  const handleTransactionAction = (action: string, index: number) => {
+    setSelectedTransaction(mockTransactions[index]);
+
+    modalProps.openModal();
+  };
+
   const handleThemeToggle = (event: ChangeEvent<HTMLInputElement>) => {
     const theme = event.currentTarget.checked ? 'dark' : 'light';
 
@@ -66,7 +79,10 @@ const TransactionsPage: FC = () => {
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
         <>
-          <Transactions transactions={auth.isReady ? mockTransactions : undefined} />
+          <Transactions
+            onAction={handleTransactionAction}
+            transactions={auth.isReady ? mockTransactions : undefined}
+          />
           {auth.isReady && (
             <label className={styles.tempDarkModeContainer}>
               <input
@@ -79,6 +95,9 @@ const TransactionsPage: FC = () => {
           )}
         </>
       </animated.div>
+      {selectedTransaction && (
+        <UpdateTransactionModal {...modalProps} transaction={selectedTransaction} />
+      )}
     </div>
   );
 };

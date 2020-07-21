@@ -1,4 +1,5 @@
 import { Reducer } from 'react';
+import mockCategories from './mockCategories';
 import { UserActions, UserState } from './models';
 
 const userReducer: Reducer<UserState, UserActions> = (state, action) => {
@@ -6,6 +7,7 @@ const userReducer: Reducer<UserState, UserActions> = (state, action) => {
     case 'setGroup': {
       return {
         ...state,
+        categories: mockCategories,
         group: action.payload,
         isAuthenticated: true,
         isComplete: true,
