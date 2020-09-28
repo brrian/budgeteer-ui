@@ -3,26 +3,16 @@ import { Transaction as ITransaction } from '../../util/helpers/api/models';
 import Transaction, { TransactionPlaceholder } from './Transaction';
 
 interface TransactionProps {
-  onAction: (action: string, index: number) => void;
   transactions?: ITransaction[];
+  onSelect: (index: number) => void;
 }
 
-const Transactions: FC<TransactionProps> = ({ transactions, onAction }) => {
-  const isTouchDevice =
-    !!window.ontouchstart ||
-    !!window.navigator.maxTouchPoints ||
-    !!window.navigator.msMaxTouchPoints;
-
+const Transactions: FC<TransactionProps> = ({ transactions, onSelect }) => {
   return (
     <div>
       {transactions
         ? transactions.map((transaction, index) => (
-            <Transaction
-              {...transaction}
-              key={index}
-              mode={isTouchDevice ? 'swipe' : 'hover'}
-              onAction={action => onAction(action, index)}
-            />
+            <Transaction transaction={transaction} key={index} onSelect={() => onSelect(index)} />
           ))
         : [...Array(12)].map((item, index) => <TransactionPlaceholder key={index} />)}
     </div>

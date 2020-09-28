@@ -9,17 +9,27 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isOutline?: boolean;
 }
 
-const Button: FC<ButtonProps> = ({ children, isLink, isLoading, isOutline, ...remainingProps }) => {
+const Button: FC<ButtonProps> = ({
+  children,
+  className,
+  isLink,
+  isLoading,
+  isOutline,
+  ...remainingProps
+}) => {
   const { t } = useTranslation();
 
   return (
     <button
-      className={cc({
-        [styles.button]: true,
-        [styles.isLink]: isLink,
-        [styles.isOutline]: isOutline,
-      })}
       {...remainingProps}
+      className={cc([
+        className,
+        {
+          [styles.button]: true,
+          [styles.isLink]: isLink,
+          [styles.isOutline]: isOutline,
+        },
+      ])}
     >
       {isLoading ? t('loading') : children}
     </button>

@@ -22,15 +22,14 @@ html {
   --color-bg: #{$colorWhite};
   --color-border: #{$colorGray800};
   --color-borderAlt: #{$colorGray800};
+  --color-buttonText: #{$colorGray100};
   --color-link: #{$colorGray800};
   --color-modalOverlay: rgba(#{rgb($colorGray900)}, 0.8);
   --color-modalShadow: #{$colorGray900};
   --color-placeholder: #{$colorGray300};
-  --color-popupBg: #{$colorGray50};
-  --color-popupOverlay: rgba(#{rgb($colorWhite)}, 0.8);
-  --color-popupShadow: #{$colorGray700};
   --color-progressBarBg: #{$colorGray100};
   --color-progressBarBorder: #{$colorGray800};
+  --color-swipeBorder: #{$colorGray100};
   --color-text: #{$colorGray800};
   --color-textAlt: #{$colorGray400};
 
@@ -38,13 +37,12 @@ html {
     --color-bg: #{$colorGray800};
     --color-border: #{$colorGray500};
     --color-borderAlt: #{$colorGray900};
+    --color-buttonText: #{$colorGray200};
     --color-link: #{$colorGray50};
-    --color-popupBg: #{$colorGray700};
-    --color-popupShadow: #{$colorGray900};
-    --color-popupOverlay: rgba(#{rgb($colorGray800)}, 0.8);
     --color-placeholder: #{$colorGray700};
     --color-progressBarBg: #{$colorGray700};
     --color-progressBarBorder: transparent;
+    --color-swipeBorder: #{$colorGray900};
     --color-text: #{$colorGray200};
     --color-textAlt: #{$colorGray700};
   }
