@@ -20,12 +20,14 @@
       "verifyAccount": "Verify account"
     },
     "common": {
-      "addSplit": "Add split",
+      "addNote": "Add Note",
+      "delete": "Delete",
+      "disable": "Disable",
       "edit": "Edit",
+      "enable": "Enable",
       "loading": "Loading",
       "split": "Split",
       "submit": "Submit",
-      "toggle": "Toggle",
       "updateAvailable": "A new update date is available. Restart?"
     },
     "validation": {

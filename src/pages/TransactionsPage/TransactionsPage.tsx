@@ -54,7 +54,7 @@ const TransactionsPage: FC = () => {
     isExpanded.current = !isExpanded.current;
   };
 
-  const handleTransactionAction = (action: string, index: number) => {
+  const handleTransactionSelect = (index: number) => {
     setSelectedTransaction(mockTransactions[index]);
 
     modalProps.openModal();
@@ -80,7 +80,7 @@ const TransactionsPage: FC = () => {
       <animated.div className={styles.transactions} style={{ top: height }}>
         <>
           <Transactions
-            onAction={handleTransactionAction}
+            onSelect={handleTransactionSelect}
             transactions={auth.isReady ? mockTransactions : undefined}
           />
           {auth.isReady && (

@@ -2,9 +2,9 @@
 
 .button {
   padding: 6px 10px;
-  border: 2px solid var(--color-borderAlt);
+  border: 1.5px solid var(--color-borderAlt);
   background-color: var(--color-borderAlt);
-  color: var(--color-text);
+  color: var(--color-buttonText);
   font-family: $fontFamily;
   font-size: 1em;
 
@@ -16,7 +16,7 @@
 
 .isOutline {
   background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-borderAlt);
 }
 
 .isLink {
@@ -24,6 +24,7 @@
   border: 0;
   outline: 0;
   background-color: transparent;
+  color: var(--color-text);
   text-decoration: underline;
   cursor: pointer;
 
