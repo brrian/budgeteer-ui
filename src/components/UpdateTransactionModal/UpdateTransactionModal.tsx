@@ -2,8 +2,8 @@ import React, { FC, useMemo } from 'react';
 import { useUserState } from '../../util/contexts/UserContext';
 import { Transaction } from '../../util/helpers/api/models';
 import useTranslation from '../../util/hooks/useTranslation';
-import Button from '../Button';
 import Modal, { ModalState } from '../Modal';
+import Select from '../Select/Select';
 import Swipeable from '../Swipeable';
 import styles from './styles.module.scss';
 
@@ -18,6 +18,8 @@ const UpdateTransactionModal: FC<UpdateTransactionModalProps> = ({
   const { t } = useTranslation();
 
   const { categories } = useUserState();
+
+  const categoryOptions = useMemo(() => Array.from(categories.values()), [categories]);
 
   const actions = useMemo(
     () => [
@@ -69,6 +71,10 @@ const UpdateTransactionModal: FC<UpdateTransactionModalProps> = ({
     window.alert(`do action: ${action}`);
   };
 
+  const handleCategoryChange = (category: string) => {
+    window.alert(`update category: ${category}`);
+  };
+
   const transactions = [
     {
       amount: transaction.amount,
@@ -87,7 +93,11 @@ const UpdateTransactionModal: FC<UpdateTransactionModalProps> = ({
           <Swipeable actions={actions} key={index} onAction={handleAction}>
             <div className={styles.transaction}>
               <div>
-                <Button isLink>{categories[item.categoryId]}</Button>
+                <Select
+                  initialValue={`${item.categoryId}`}
+                  onChange={handleCategoryChange}
+                  options={categoryOptions}
+                />
                 {item.note && <p className={styles.note}>*{item.note}*</p>}
               </div>
               <span className={styles.amount}>${item.amount.toFixed(2)}</span>

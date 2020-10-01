@@ -8,7 +8,7 @@ const UserStateContext = createContext<UserState | undefined>(undefined);
 const UserDispatchContext = createContext<Dispatch<UserActions> | undefined>(undefined);
 
 const initialState: UserState = {
-  categories: {},
+  categories: new Map(),
   isAuthenticated: false,
   isComplete: false,
   user: undefined,

@@ -37,7 +37,7 @@ const Transaction: FC<TransactionProps> = ({ transaction, onSelect }) => {
           })}
         >
           <div>
-            {categories[categoryId]}
+            {categories.get(categoryId)?.label}
             {note && ` *${note}*`}
           </div>
           <span className={styles.amount}>${amount.toFixed(2)}</span>
@@ -51,7 +51,7 @@ const Transaction: FC<TransactionProps> = ({ transaction, onSelect }) => {
             key={index}
           >
             <div>
-              {categories[split.categoryId]}
+              {categories.get(split.categoryId)?.label}
               {split.note && ` *${split.note}*`}
             </div>
             <span>${split.amount.toFixed(2)}</span>
