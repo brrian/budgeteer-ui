@@ -6,8 +6,11 @@ export interface ValidateGroupResponse {
   isValid: boolean;
 }
 
-export interface Categories {
-  [category: string]: string;
+export type Categories = Map<string, Category>;
+
+interface Category {
+  id: string;
+  label: string;
 }
 
 export interface Transaction {
@@ -15,7 +18,7 @@ export interface Transaction {
   date: string;
   description: string;
   note: string | null;
-  categoryId: number;
+  categoryId: string;
   amount: number;
   originalAmount: number;
   disabled: boolean;
@@ -25,7 +28,7 @@ export interface Transaction {
 
 interface Split {
   amount: number;
-  categoryId: number;
+  categoryId: string;
   disabled: boolean;
   note: string | null;
 }
