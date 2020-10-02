@@ -1,7 +1,7 @@
 import cc from 'classcat';
 import React, { ButtonHTMLAttributes, FC } from 'react';
 import useTranslation from '../../util/hooks/useTranslation';
-import styles from './styles.module.scss';
+import styles from './Button.module.scss';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLink?: boolean;

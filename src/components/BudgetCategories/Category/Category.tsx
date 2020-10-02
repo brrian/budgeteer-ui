@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from './styles.module.scss';
+import styles from './Category.module.scss';
 
 const Category: FC = () => {
   return (

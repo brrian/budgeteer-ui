@@ -8,7 +8,7 @@ import { getTheme, setTheme } from '../../util/helpers/theme';
 import useAuth from '../../util/hooks/useAuth';
 import useModal from '../../util/hooks/useModal';
 import mockTransactions from './mockTransactions';
-import styles from './styles.module.scss';
+import styles from './TransactionsPage.module.scss';
 
 const COLLAPSED_HEIGHT = 40;
 const EXPANDED_HEIGHT = 286;

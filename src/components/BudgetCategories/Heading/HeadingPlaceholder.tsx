@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Placeholder from '../../Placeholder';
-import styles from './styles.module.scss';
+import styles from './Heading.module.scss';
 
 const Heading: FC = () => {
   return (

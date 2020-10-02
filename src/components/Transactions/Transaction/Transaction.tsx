@@ -2,7 +2,7 @@ import cc from 'classcat';
 import React, { FC, useMemo } from 'react';
 import { useUserState } from '../../../util/contexts/UserContext';
 import { Transaction as ITransaction } from '../../../util/helpers/api/models';
-import styles from './styles.module.scss';
+import styles from './Transaction.module.scss';
 
 interface TransactionProps {
   transaction: ITransaction;

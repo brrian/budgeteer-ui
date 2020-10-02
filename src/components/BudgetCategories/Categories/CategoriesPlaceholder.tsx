@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { CategoryPlaceholder } from '../Category';
-import styles from './styles.module.scss';
+import styles from './Categories.module.scss';
 
 const CategoriesPlaceholder: FC = () => {
   return (
