@@ -30,7 +30,6 @@ html {
   --color-progressBarBg: #{$colorGray100};
   --color-progressBarBorder: #{$colorGray800};
   --color-swipeBorder: #{$colorGray100};
-  --color-swipeOverlay: rgba(#{rgb($colorWhite)}, 0.95);
   --color-text: #{$colorGray800};
   --color-textAlt: #{$colorGray400};
 
@@ -44,7 +43,6 @@ html {
     --color-progressBarBg: #{$colorGray700};
     --color-progressBarBorder: transparent;
     --color-swipeBorder: rgba(#{rgb($colorGray900)}, 0.2);
-    --color-swipeOverlay: rgba(#{rgb($colorGray800)}, 0.97);
     --color-text: #{$colorGray200};
     --color-textAlt: #{$colorGray700};
   }
