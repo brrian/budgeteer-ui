@@ -8,7 +8,7 @@ import React, {
 import { DeepPartial, FieldError, FormContext, OnSubmit, useForm } from 'react-hook-form';
 import useTranslation from '../../util/hooks/useTranslation';
 import Button from '../Button';
-import styles from './styles.module.scss';
+import styles from './AuthForm.module.scss';
 
 type FormValues = Record<string, any>;
 

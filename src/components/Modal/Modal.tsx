@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalContextProvider } from '../../util/contexts/ModalContext';
-import styles from './styles.module.scss';
+import styles from './Modal.module.scss';
 
 export interface ModalProps {
   closeModal: () => void;

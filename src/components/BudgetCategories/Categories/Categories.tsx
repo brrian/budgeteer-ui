@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Category from '../Category';
 import { Category as ICategory } from '../models';
-import styles from './styles.module.scss';
+import styles from './Categories.module.scss';
 
 interface CategoriesProps {
   categories: ICategory[];

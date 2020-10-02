@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import Button from '../Button';
-import styles from './styles.module.scss';
+import styles from './Swipeable.module.scss';
 
 export interface Action {
   breakpoints: {

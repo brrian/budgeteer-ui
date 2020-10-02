@@ -3,9 +3,9 @@ import { useUserState } from '../../util/contexts/UserContext';
 import { Transaction } from '../../util/helpers/api/models';
 import useTranslation from '../../util/hooks/useTranslation';
 import Modal, { ModalState } from '../Modal';
-import Select from '../Select/Select';
+import Select from '../Select';
 import Swipeable from '../Swipeable';
-import styles from './styles.module.scss';
+import styles from './UpdateTransactionModal.module.scss';
 
 interface UpdateTransactionModalProps extends ModalState {
   transaction: Transaction;

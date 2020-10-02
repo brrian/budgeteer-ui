@@ -1,7 +1,7 @@
 import { random } from 'lodash-es';
 import React, { FC, useRef } from 'react';
 import Placeholder from '../../Placeholder';
-import styles from './styles.module.scss';
+import styles from './Transaction.module.scss';
 
 const TransactionPlaceholder: FC = () => {
   const sizes = useRef({
