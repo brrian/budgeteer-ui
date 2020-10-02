@@ -36,6 +36,7 @@
     "updateServiceWorker": "node appendCustomSw.js",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,css,scss}'"
   },
+  "proxy": "https://gcj0x74c01.execute-api.us-east-1.amazonaws.com/dev",
   "eslintConfig": {
     "extends": "react-app"
   },
