@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Transaction as ITransaction } from '../../util/helpers/api/models';
 import Transaction, { TransactionPlaceholder } from './Transaction';
 
@@ -8,6 +8,10 @@ interface TransactionProps {
 }
 
 const Transactions: FC<TransactionProps> = ({ transactions, onSelect }) => {
+  useEffect(() => {
+    onSelect(4);
+  }, []);
+
   return (
     <div>
       {transactions

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
 import Transactions from '../../components/Transactions';
