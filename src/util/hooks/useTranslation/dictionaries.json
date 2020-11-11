@@ -26,6 +26,8 @@
       "edit": "Edit",
       "enable": "Enable",
       "loading": "Loading",
+      "save": "Save",
+      "selectCategory": "Select category",
       "split": "Split",
       "submit": "Submit",
       "updateAvailable": "A new update date is available. Restart?"

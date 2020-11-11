@@ -73,7 +73,12 @@ const Swipeable: FC<SwipeableProps> = ({ actions, children, className, onAction 
     !!window.navigator.msMaxTouchPoints;
 
   return (
-    <div className={styles.swipeContainer}>
+    <div
+      className={cc({
+        [styles.swipeContainer]: true,
+        [styles.isTouchDevice]: isTouchDevice,
+      })}
+    >
       <animated.div
         {...(isTouchDevice ? bind() : undefined)}
         className={cc([
@@ -81,7 +86,6 @@ const Swipeable: FC<SwipeableProps> = ({ actions, children, className, onAction 
           {
             [styles.swipeItem]: true,
             [styles.isSwiping]: isSwiping,
-            [styles.isTouchDevice]: isTouchDevice,
           },
         ])}
         style={props}

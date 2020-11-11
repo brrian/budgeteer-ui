@@ -95,7 +95,7 @@ const TransactionsPage: FC = () => {
           )}
         </>
       </animated.div>
-      {selectedTransaction && (
+      {selectedTransaction && modalProps.isVisible && (
         <UpdateTransactionModal {...modalProps} transaction={selectedTransaction} />
       )}
     </div>
