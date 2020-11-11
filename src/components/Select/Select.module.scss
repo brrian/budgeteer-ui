@@ -1,6 +1,10 @@
 .selectContainer {
   position: relative;
 
+  button {
+    text-align: left;
+  }
+
   select {
     position: absolute;
     top: 0;

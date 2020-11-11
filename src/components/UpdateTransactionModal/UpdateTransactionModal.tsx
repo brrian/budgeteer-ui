@@ -1,10 +1,10 @@
-import React, { FC, useMemo } from 'react';
-import { useUserState } from '../../util/contexts/UserContext';
+import React, { FC, Fragment, useMemo, useState } from 'react';
 import { Transaction } from '../../util/helpers/api/models';
 import useTranslation from '../../util/hooks/useTranslation';
+import CategorySelect from '../CategorySelect';
 import Modal, { ModalState } from '../Modal';
-import Select from '../Select';
 import Swipeable from '../Swipeable';
+import SplitTransactionForm from './SplitTransactionForm';
 import styles from './UpdateTransactionModal.module.scss';
 
 interface UpdateTransactionModalProps extends ModalState {
@@ -17,9 +17,7 @@ const UpdateTransactionModal: FC<UpdateTransactionModalProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { categories } = useUserState();
-
-  const categoryOptions = useMemo(() => Array.from(categories.values()), [categories]);
+  const [splitFormIndex, setSplitFormIndex] = useState<number>();
 
   const actions = useMemo(
     () => [
@@ -67,8 +65,12 @@ const UpdateTransactionModal: FC<UpdateTransactionModalProps> = ({
     [t]
   );
 
-  const handleAction = (action: string) => {
-    window.alert(`do action: ${action}`);
+  const handleAction = (action: string, index: number) => {
+    if (action === 'split') {
+      setSplitFormIndex(index);
+    } else {
+      window.alert(`do action: ${action}`);
+    }
   };
 
   const handleCategoryChange = (category: string) => {
@@ -90,19 +92,21 @@ const UpdateTransactionModal: FC<UpdateTransactionModalProps> = ({
       <p>{transaction.description}</p>
       <div className={styles.transactions}>
         {transactions.map((item, index) => (
-          <Swipeable actions={actions} key={index} onAction={handleAction}>
-            <div className={styles.transaction}>
-              <div>
-                <Select
-                  initialValue={`${item.categoryId}`}
-                  onChange={handleCategoryChange}
-                  options={categoryOptions}
-                />
-                {item.note && <p className={styles.note}>*{item.note}*</p>}
+          <Fragment key={index}>
+            <Swipeable actions={actions} onAction={action => handleAction(action, index)}>
+              <div className={styles.transaction}>
+                <div>
+                  <CategorySelect
+                    defaultValue={`${item.categoryId}`}
+                    onChange={handleCategoryChange}
+                  />
+                  {item.note && <p className={styles.note}>*{item.note}</p>}
+                </div>
+                <span className={styles.amount}>${item.amount.toFixed(2)}</span>
               </div>
-              <span className={styles.amount}>${item.amount.toFixed(2)}</span>
-            </div>
-          </Swipeable>
+            </Swipeable>
+            {splitFormIndex === index && <SplitTransactionForm />}
+          </Fragment>
         ))}
       </div>
     </Modal>

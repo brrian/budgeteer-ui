@@ -8,15 +8,22 @@ interface Option {
 }
 
 interface SelectProps {
-  initialValue: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
   options: Option[];
+  placeholder?: string;
 }
 
-const Select: FC<SelectProps> = ({ options, onChange, initialValue }) => {
-  const [value, setValue] = useState(initialValue);
+const Select: FC<SelectProps> = ({ defaultValue, onChange, options, placeholder }) => {
+  const [value, setValue] = useState(defaultValue);
 
-  const label = useMemo(() => options.find(option => option.id === value)?.label, [options, value]);
+  const label = useMemo(() => {
+    if (!value && placeholder) {
+      return placeholder;
+    }
+
+    return options.find(option => option.id === value)?.label;
+  }, [options, value]);
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const newValue = event.currentTarget.value;
@@ -28,7 +35,16 @@ const Select: FC<SelectProps> = ({ options, onChange, initialValue }) => {
   return (
     <div className={styles.selectContainer}>
       <Button isLink>{label}</Button>
-      <select value={value} onChange={handleSelectChange}>
+      <select
+        defaultValue={placeholder ? '' : defaultValue}
+        onChange={handleSelectChange}
+        value={value}
+      >
+        {placeholder && (
+          <option disabled value="">
+            {placeholder}
+          </option>
+        )}
         {options.map(({ id, label }) => (
           <option key={id} value={id}>
             {label}

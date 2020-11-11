@@ -1,0 +1,27 @@
+@import 'styles/helpers';
+
+.buttonInput {
+  margin-left: -5px;
+}
+
+.button {
+  padding: 5px;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: $fontFamily;
+  font-size: 1em;
+  text-align: left;
+  text-decoration: underline;
+
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.input {
+  width: 100%;
+}
