@@ -3,10 +3,9 @@ import { createPortal } from 'react-dom';
 import { ModalContextProvider } from '../../util/contexts/ModalContext';
 import styles from './Modal.module.scss';
 
-export interface ModalProps {
+interface ModalProps {
   closeModal: () => void;
   isVisible: boolean;
-  openModal: () => void;
 }
 
 const Modal: FC<ModalProps> = ({ children, ...modalProps }) => {
