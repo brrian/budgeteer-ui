@@ -5,9 +5,16 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { DeepPartial, FieldError, FormContext, OnSubmit, useForm } from 'react-hook-form';
+import {
+  DeepPartial,
+  FormProvider,
+  SubmitHandler,
+  UnpackNestedValue,
+  useForm,
+} from 'react-hook-form';
 import useTranslation from '../../util/hooks/useTranslation';
-import Button from '../Button';
+import Form from '../Form';
+import FormField from '../FormField';
 import styles from './AuthForm.module.scss';
 
 type FormValues = Record<string, any>;
@@ -19,12 +26,12 @@ interface Input {
 }
 
 interface AuthFormProps<TFormValues = FormValues> {
-  defaultValues?: DeepPartial<TFormValues>;
+  defaultValues?: UnpackNestedValue<DeepPartial<TFormValues>>;
   errors?: string[];
   heading: string;
   inputs: Input[];
   isLoading?: boolean;
-  onSubmit: OnSubmit<TFormValues>;
+  onSubmit: SubmitHandler<TFormValues>;
 }
 
 const AuthForm = <TFormValues extends FormValues = FormValues>({
@@ -36,7 +43,7 @@ const AuthForm = <TFormValues extends FormValues = FormValues>({
   isLoading,
   onSubmit,
 }: PropsWithChildren<AuthFormProps<TFormValues>>): ReactElement => {
-  const { t } = useTranslation(['auth', 'validation']);
+  const { t } = useTranslation('validation');
 
   const formProps = useForm<TFormValues>({ defaultValues });
   const { handleSubmit, register } = formProps;
@@ -45,7 +52,7 @@ const AuthForm = <TFormValues extends FormValues = FormValues>({
 
   useEffect(() => {
     const errorMessages = Object.entries(formProps.errors).map(([field, error]) => {
-      return t(`validation:${(error as FieldError)?.type}`, { field: t(field) });
+      return error?.message || t(`${error?.type}`, { field: t(field) });
     });
 
     setFormErrors(errorMessages);
@@ -55,37 +62,29 @@ const AuthForm = <TFormValues extends FormValues = FormValues>({
 
   return (
     <div className={styles.container}>
-      <FormContext {...formProps}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <h2 className={styles.formHeading}>{heading}</h2>
-          {errors.length > 0 && (
-            <ul className={styles.errors}>
-              {errors.map((error, index) => (
-                <li key={`${error}-${index}`}>{t('error', { message: error })}</li>
-              ))}
-            </ul>
-          )}
-          <div>
-            {inputs.map(({ attrs, label, name }) => (
-              <div className={styles.fieldGroup} key={name}>
-                <label>{label}</label>
-                <input
-                  {...attrs}
-                  name={name}
-                  ref={attrs?.required ? register({ required: true }) : register}
-                  required={false}
-                />
-              </div>
-            ))}
-          </div>
-          {children && <div className={styles.extras}>{children}</div>}
-          <div className={styles.formActions}>
-            <Button type="submit" disabled={isLoading}>
-              {t('common:submit')}
-            </Button>
-          </div>
-        </form>
-      </FormContext>
+      <FormProvider {...formProps}>
+        <Form
+          className={styles.form}
+          errors={errors}
+          Footer={children}
+          heading={heading}
+          isLoading={isLoading}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {inputs.map(({ attrs, label, name }, index) => (
+            <FormField key={name}>
+              <label htmlFor={`input-${name}-${index}`}>{label}</label>
+              <input
+                {...attrs}
+                id={`input-${name}-${index}`}
+                name={name}
+                ref={attrs?.required ? register({ required: true }) : register}
+                required={false}
+              />
+            </FormField>
+          ))}
+        </Form>
+      </FormProvider>
     </div>
   );
 };

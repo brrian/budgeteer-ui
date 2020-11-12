@@ -73,6 +73,16 @@ input {
   }
 }
 
+select {
+  padding: 3px 4px;
+  border: 1px solid $colorGray100;
+  outline: 0;
+  background-color: $colorGray100;
+  color: $colorGray800;
+  font-family: $fontFamily;
+  font-size: 1em;
+}
+
 p {
   margin-bottom: 12px;
 }

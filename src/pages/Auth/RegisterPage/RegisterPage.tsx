@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
-import { OnSubmit } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
 import { PAGE_FORGOT_PASSWORD, PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../../constants';
@@ -21,7 +21,7 @@ const RegisterPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: OnSubmit<FormValues> = async ({ email, group, password }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = async ({ email, group, password }) => {
     setErrors([]);
     setIsLoading(true);
 

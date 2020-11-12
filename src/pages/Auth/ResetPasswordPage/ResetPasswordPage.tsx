@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
-import { OnSubmit } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
 import { PAGE_LOGIN } from '../../../constants';
@@ -25,7 +25,7 @@ const ResetPasswordPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: OnSubmit<FormValues> = async ({ code, email, newPassword }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = async ({ code, email, newPassword }) => {
     setIsLoading(true);
 
     const hasError = await Auth.forgotPasswordSubmit(email, code, newPassword).catch(error => {

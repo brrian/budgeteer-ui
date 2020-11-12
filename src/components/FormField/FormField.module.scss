@@ -1,0 +1,24 @@
+.formField {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  input:not([type='checkbox']):not([type='radio']),
+  select {
+    width: 100%;
+  }
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    position: relative;
+    top: 2px;
+    margin-right: 8px;
+  }
+}
