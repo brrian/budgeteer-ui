@@ -54,8 +54,14 @@ const TransactionsPage: FC = () => {
     isExpanded.current = !isExpanded.current;
   };
 
-  const handleTransactionSelect = (index: number) => {
-    setSelectedTransaction(mockTransactions[index]);
+  const handleTransactionAction = (
+    action: string,
+    transactionIndex: number,
+    splitIndex?: number
+  ) => {
+    window.alert(`Action: ${action}, Index: ${transactionIndex}, Split Index: ${splitIndex}`);
+
+    setSelectedTransaction(mockTransactions[transactionIndex]);
 
     modalProps.openModal();
   };
@@ -80,7 +86,7 @@ const TransactionsPage: FC = () => {
       <animated.div className={styles.transactions} style={{ top: height }}>
         <>
           <Transactions
-            onSelect={handleTransactionSelect}
+            onAction={handleTransactionAction}
             transactions={auth.isReady ? mockTransactions : undefined}
           />
           {auth.isReady && (

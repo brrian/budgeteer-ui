@@ -34,6 +34,7 @@ const Modal: FC<ModalProps> = ({ children, ...modalProps }) => {
     }
 
     return () => {
+      document.body.classList.remove(styles.modalVisible);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [closeModal, isVisible]);

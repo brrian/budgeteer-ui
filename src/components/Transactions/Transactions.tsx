@@ -1,20 +1,25 @@
 import React, { FC } from 'react';
 import { Transaction as ITransaction } from '../../util/helpers/api/models';
-import Transaction, { TransactionPlaceholder } from './Transaction';
+import Transaction from './Transaction';
+import TransactionPlaceholder from './TransactionPlaceholder';
 
 interface TransactionProps {
+  onAction: (action: string, transactionIndex: number, splitIndex?: number) => void;
   transactions?: ITransaction[];
-  onSelect: (index: number) => void;
 }
 
-const Transactions: FC<TransactionProps> = ({ transactions, onSelect }) => {
+const Transactions: FC<TransactionProps> = ({ onAction, transactions }) => {
   return (
     <div>
       {transactions
         ? transactions.map((transaction, index) => (
-            <Transaction transaction={transaction} key={index} onSelect={() => onSelect(index)} />
+            <Transaction
+              key={index}
+              onAction={(action, splitIndex) => onAction(action, index, splitIndex)}
+              transaction={transaction}
+            />
           ))
-        : [...Array(12)].map((item, index) => <TransactionPlaceholder key={index} />)}
+        : [...Array(12)].map((_item, index) => <TransactionPlaceholder key={index} />)}
     </div>
   );
 };
