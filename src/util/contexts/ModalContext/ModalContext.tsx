@@ -1,18 +1,18 @@
 import React, { createContext, FC, useContext } from 'react';
-import { ModalState } from '../../../components/Modal';
+import { ModalProps, ModalState } from '../../../components/Modal';
 
 type ModalContextProviderProps = ModalState;
 
 const ModalContext = createContext<ModalState | undefined>(undefined);
 
-export const useModalState = (): ModalState => {
+export const useModalState = <TProps extends ModalProps = undefined>(): ModalState<TProps> => {
   const context = useContext(ModalContext);
 
   if (context === undefined) {
-    throw new Error('usModalState must be used within a UserModalContextProvider');
+    throw new Error('usModalState must be used within a ModalContextProvider');
   }
 
-  return context;
+  return context as ModalState<TProps>;
 };
 
 export const ModalContextProvider: FC<ModalContextProviderProps> = ({
