@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FC, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useRef } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
+import SplitTransactionModal from '../../components/SplitTransactionModal';
 import Transactions from '../../components/Transactions';
-import UpdateTransactionModal from '../../components/UpdateTransactionModal';
 import { Transaction } from '../../util/helpers/api/models';
 import { getTheme, setTheme } from '../../util/helpers/theme';
 import useAuth from '../../util/hooks/useAuth';
@@ -13,15 +13,18 @@ import styles from './TransactionsPage.module.scss';
 const COLLAPSED_HEIGHT = 40;
 const EXPANDED_HEIGHT = 286;
 
+type ModalProps = {
+  splitIndex?: number;
+  transaction: Transaction;
+};
+
 const TransactionsPage: FC = () => {
   const auth = useAuth();
 
-  const modalProps = useModal();
+  const modalProps = useModal<ModalProps>();
 
   const isExpanded = useRef(false);
   const longPressRef = useRef<number>();
-
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction>();
 
   const [{ height }, set] = useSpring(() => ({
     config: config.stiff,
@@ -55,15 +58,14 @@ const TransactionsPage: FC = () => {
   };
 
   const handleTransactionAction = (
-    action: string,
+    _action: string,
     transactionIndex: number,
     splitIndex?: number
   ) => {
-    window.alert(`Action: ${action}, Index: ${transactionIndex}, Split Index: ${splitIndex}`);
-
-    setSelectedTransaction(mockTransactions[transactionIndex]);
-
-    modalProps.openModal();
+    modalProps.openModal({
+      splitIndex,
+      transaction: mockTransactions[transactionIndex],
+    });
   };
 
   const handleThemeToggle = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,9 +103,7 @@ const TransactionsPage: FC = () => {
           )}
         </>
       </animated.div>
-      {selectedTransaction && modalProps.isVisible && (
-        <UpdateTransactionModal {...modalProps} transaction={selectedTransaction} />
-      )}
+      {modalProps.isVisible && <SplitTransactionModal {...modalProps} />}
     </div>
   );
 };

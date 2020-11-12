@@ -1,19 +1,29 @@
-import React, { FC, useMemo } from 'react';
+import React, { forwardRef, SelectHTMLAttributes, useMemo } from 'react';
 import { useUserState } from '../../util/contexts/UserContext';
-import Select from '../Select';
 
-interface CategorySelectProps {
-  defaultValue?: string;
-  onChange?: (value: string) => void;
-  placeholder?: string;
-}
+type CategorySelectProps = SelectHTMLAttributes<HTMLSelectElement>;
 
-const CategorySelect: FC<CategorySelectProps> = props => {
-  const { categories } = useUserState();
+const CategorySelect = forwardRef<HTMLSelectElement, CategorySelectProps>(
+  ({ placeholder, ...remainingProps }, ref) => {
+    const { categories } = useUserState();
 
-  const categoryOptions = useMemo(() => Array.from(categories.values()), [categories]);
+    const categoryOptions = useMemo(() => Array.from(categories.values()), [categories]);
 
-  return <Select options={categoryOptions} {...props} />;
-};
+    return (
+      <select {...remainingProps} ref={ref}>
+        {placeholder && (
+          <option disabled value="">
+            {placeholder}
+          </option>
+        )}
+        {categoryOptions.map(({ id, label }) => (
+          <option key={id} value={id}>
+            {label}
+          </option>
+        ))}
+      </select>
+    );
+  }
+);
 
 export default CategorySelect;

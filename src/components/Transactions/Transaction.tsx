@@ -40,8 +40,8 @@ const Transaction: FC<TransactionProps> = ({ onAction, transaction }) => {
           max: Infinity,
         },
         color: 'green',
-        id: 'addNote',
-        label: t('addNote'),
+        id: 'edit',
+        label: t('edit'),
         orientation: 'left',
       },
       {
