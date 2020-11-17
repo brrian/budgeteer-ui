@@ -28,6 +28,7 @@
       "disable": "Disable",
       "disabled": "Disabled",
       "edit": "Edit",
+      "editTransaction": "Edit Transaction",
       "enable": "Enable",
       "error": "ERROR! {{message}}",
       "invalidAmount": "Invalid amount format",

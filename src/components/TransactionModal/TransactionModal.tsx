@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Transaction } from '../../util/helpers/api/models';
 import useTranslation from '../../util/hooks/useTranslation';
 import CategorySelect from '../CategorySelect';
@@ -8,50 +8,51 @@ import FormField from '../FormField';
 import Modal, { ModalState } from '../Modal';
 import calculateAmount from './util/calculateAmount';
 
-type SplitTransactionModalProps = ModalState<{
-  splitIndex?: number;
-  transaction: Transaction;
+type TransactionModalProps = ModalState<{
+  defaultValues?: Partial<Transaction>;
+  headingLabel: string;
+  onSubmit: (data: TransactionFormValues) => void;
+  submitLabel: string;
 }>;
 
-interface FormValues {
+export interface TransactionFormValues {
   amount: string;
   category: string;
   disabled?: boolean;
   note?: string;
 }
 
-const SplitTransactionModal: FC<SplitTransactionModalProps> = props => {
-  const { transaction } = props;
-
-  const formProps = useForm<FormValues>({
+const TransactionModal: FC<TransactionModalProps> = ({
+  defaultValues,
+  headingLabel,
+  submitLabel,
+  onSubmit,
+  ...modalProps
+}) => {
+  const formProps = useForm<TransactionFormValues>({
     defaultValues: {
-      category: '',
+      amount: defaultValues?.amount ? `${defaultValues.amount.toFixed(2)}` : undefined,
+      category: defaultValues?.categoryId ?? '',
+      disabled: defaultValues?.disabled,
+      note: defaultValues?.note ?? undefined,
     },
   });
 
   const { t } = useTranslation(['common', 'validation']);
-
-  const handleSubmit: SubmitHandler<FormValues> = _data => {
-    // Handle submit
-  };
 
   const errors = Object.entries(formProps.errors).map(([field, error]) => {
     return error?.message || t(`validation:${error?.type}`, { field: t(field) });
   });
 
   return (
-    <Modal {...props}>
+    <Modal {...modalProps}>
       <FormProvider {...formProps}>
         <Form
           errors={errors}
-          heading={t('splitTransaction')}
-          onCancel={props.closeModal}
-          onSubmit={formProps.handleSubmit(handleSubmit)}
+          heading={headingLabel}
+          onSubmit={formProps.handleSubmit(onSubmit)}
+          submitLabel={submitLabel}
         >
-          <FormField>
-            <label>{t('description')}</label>
-            <input type="text" readOnly value={transaction.description} />
-          </FormField>
           <FormField>
             <label htmlFor="category-select">{t('category')}</label>
             <CategorySelect
@@ -91,4 +92,4 @@ const SplitTransactionModal: FC<SplitTransactionModalProps> = props => {
   );
 };
 
-export default SplitTransactionModal;
+export default TransactionModal;
