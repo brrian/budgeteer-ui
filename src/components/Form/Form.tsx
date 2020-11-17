@@ -12,6 +12,7 @@ interface FormProps {
   isLoading?: boolean;
   onCancel?: (event: MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
+  submitLabel?: string;
 }
 
 const Form: FC<FormProps> = ({
@@ -23,6 +24,7 @@ const Form: FC<FormProps> = ({
   isLoading,
   onCancel,
   onSubmit,
+  submitLabel,
 }) => {
   const { t } = useTranslation();
 
@@ -40,7 +42,7 @@ const Form: FC<FormProps> = ({
       {Footer && <div className={styles.extras}>{Footer}</div>}
       <div className={styles.formActions}>
         <Button type="submit" disabled={isLoading}>
-          {t('submit')}
+          {submitLabel ?? t('submit')}
         </Button>
         {onCancel && (
           <Button isOutline type="button" onClick={onCancel}>
