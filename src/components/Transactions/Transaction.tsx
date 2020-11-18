@@ -96,7 +96,7 @@ const Transaction: FC<TransactionProps> = ({ onAction, transaction }) => {
           <div
             className={cc({
               [styles.item]: true,
-              [styles.disabled]: disabled,
+              [styles.disabled]: item.disabled,
             })}
           >
             <div>
