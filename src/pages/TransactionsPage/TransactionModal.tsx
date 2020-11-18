@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Transaction } from '../../util/helpers/api/models';
 import useTranslation from '../../util/hooks/useTranslation';
-import CategorySelect from '../CategorySelect';
-import Form from '../Form';
-import FormField from '../FormField';
-import Modal, { ModalState } from '../Modal';
+import CategorySelect from '../../components/CategorySelect';
+import Form from '../../components/Form';
+import FormField from '../../components/FormField';
+import Modal, { ModalState } from '../../components/Modal';
 import calculateAmount from './util/calculateAmount';
 
 type TransactionModalProps = ModalState<{
