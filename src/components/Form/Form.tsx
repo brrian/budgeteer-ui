@@ -1,7 +1,7 @@
-import cc from 'classcat';
 import React, { FC, FormEvent, MouseEvent, ReactNode } from 'react';
 import useTranslation from '../../util/hooks/useTranslation';
 import Button from '../Button';
+import Card from '../Card';
 import styles from './Form.module.scss';
 
 interface FormProps {
@@ -29,27 +29,33 @@ const Form: FC<FormProps> = ({
   const { t } = useTranslation();
 
   return (
-    <form className={cc([styles.form, className])} onSubmit={onSubmit}>
-      {heading && <h2 className={styles.formHeading}>{heading}</h2>}
-      {errors.length > 0 && (
-        <ul className={styles.errors}>
-          {errors.map((error, index) => (
-            <li key={`${error}-${index}`}>{t('error', { message: error })}</li>
-          ))}
-        </ul>
-      )}
-      <div>{children}</div>
-      {Footer && <div className={styles.extras}>{Footer}</div>}
-      <div className={styles.formActions}>
-        <Button type="submit" disabled={isLoading}>
-          {submitLabel ?? t('submit')}
-        </Button>
-        {onCancel && (
-          <Button isOutline type="button" onClick={onCancel}>
-            {t('cancel')}
-          </Button>
+    <form onSubmit={onSubmit}>
+      <Card
+        Buttons={
+          <>
+            <Button type="submit" disabled={isLoading}>
+              {submitLabel ?? t('submit')}
+            </Button>
+            {onCancel && (
+              <Button isOutline type="button" onClick={onCancel}>
+                {t('cancel')}
+              </Button>
+            )}
+          </>
+        }
+        className={className}
+        heading={heading}
+      >
+        {errors.length > 0 && (
+          <ul className={styles.errors}>
+            {errors.map((error, index) => (
+              <li key={`${error}-${index}`}>{t('error', { message: error })}</li>
+            ))}
+          </ul>
         )}
-      </div>
+        <div>{children}</div>
+        {Footer && <div className={styles.extras}>{Footer}</div>}
+      </Card>
     </form>
   );
 };

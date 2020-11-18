@@ -1,20 +1,25 @@
 import React, { ChangeEvent, FC, useRef } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
-import TransactionModal, { TransactionFormValues } from '../../components/TransactionModal';
 import Transactions from '../../components/Transactions';
 import { Transaction } from '../../util/helpers/api/models';
 import { getTheme, setTheme } from '../../util/helpers/theme';
 import useAuth from '../../util/hooks/useAuth';
 import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
+import DeleteModal from './DeleteModal';
 import mockTransactions from './mockTransactions';
+import TransactionModal, { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
 
 const COLLAPSED_HEIGHT = 40;
 const EXPANDED_HEIGHT = 286;
 
-type ModalProps = {
+type DeleteModalProps = {
+  onDelete: () => void;
+};
+
+type TransactionModalProps = {
   defaultValues?: Partial<Transaction>;
   headingLabel: string;
   onSubmit: (data: TransactionFormValues) => void;
@@ -26,7 +31,8 @@ const TransactionsPage: FC = () => {
 
   const { t } = useTranslation();
 
-  const modalProps = useModal<ModalProps>();
+  const transactionModalProps = useModal<TransactionModalProps>();
+  const deleteModalProps = useModal<DeleteModalProps>();
 
   const isExpanded = useRef(false);
   const longPressRef = useRef<number>();
@@ -70,17 +76,21 @@ const TransactionsPage: FC = () => {
     const transaction = mockTransactions[transactionIndex];
 
     if (action === 'edit') {
-      modalProps.openModal({
+      transactionModalProps.openModal({
         defaultValues: transaction,
         headingLabel: t('editTransaction'),
         onSubmit: data => handleTransactionUpdate(transaction, data),
         submitLabel: t('save'),
       });
     } else if (action === 'split') {
-      modalProps.openModal({
+      transactionModalProps.openModal({
         headingLabel: t('splitTransaction'),
         onSubmit: data => handleTransactionSplit(transaction, splitIndex ?? null, data),
         submitLabel: t('split'),
+      });
+    } else if (action === 'delete') {
+      deleteModalProps.openModal({
+        onDelete: () => handleTransactionDelete(transaction),
       });
     }
   };
@@ -89,6 +99,11 @@ const TransactionsPage: FC = () => {
     const theme = event.currentTarget.checked ? 'dark' : 'light';
 
     setTheme(theme);
+  };
+
+  const handleTransactionDelete = (transaction: Transaction) => {
+    // eslint-disable-next-line no-console
+    console.log('delete transaction...', { transaction });
   };
 
   const handleTransactionSplit = (
@@ -141,7 +156,8 @@ const TransactionsPage: FC = () => {
           )}
         </>
       </animated.div>
-      {modalProps.isVisible && <TransactionModal {...modalProps} />}
+      {transactionModalProps.isVisible && <TransactionModal {...transactionModalProps} />}
+      {deleteModalProps.isVisible && <DeleteModal {...deleteModalProps} />}
     </div>
   );
 };
