@@ -1,4 +1,6 @@
-export default [
+import { Transaction } from '../../util/helpers/api/models';
+
+const transactions: Transaction[] = [
   {
     id: '00471ab6-4c7e-4264-9b54-0127e454fd41',
     date: '2017-06-29',
@@ -68,7 +70,7 @@ export default [
         note: null,
         categoryId: '8',
         amount: 33.98,
-        disabled: false,
+        disabled: true,
       },
     ],
   },
@@ -670,3 +672,5 @@ export default [
     splits: [],
   },
 ];
+
+export default transactions;

@@ -77,7 +77,7 @@ const TransactionsPage: FC = () => {
 
     if (action === 'edit') {
       transactionModalProps.openModal({
-        defaultValues: transaction,
+        defaultValues: splitIndex === undefined ? transaction : transaction.splits[splitIndex],
         headingLabel: t('editTransaction'),
         onSubmit: data => handleTransactionUpdate(transaction, data),
         submitLabel: t('save'),
