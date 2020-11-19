@@ -1,8 +1,8 @@
 import cc from 'classcat';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
-import Button from '../Button';
+import useTranslation from '../../util/hooks/useTranslation';
 import styles from './Swipeable.module.scss';
 
 export interface Action {
@@ -12,17 +12,20 @@ export interface Action {
   };
   color: string;
   id: string;
-  label: string;
+  labelKey: string;
   orientation: string;
 }
 
 interface SwipeableProps {
   actions: Action[];
+  children?: (isTouchDevice: boolean) => ReactNode;
   className?: string;
   onAction: (action: string) => void;
 }
 
 const Swipeable: FC<SwipeableProps> = ({ actions, children, className, onAction }) => {
+  const { t } = useTranslation();
+
   const [props, set] = useSpring(() => ({ left: 0 }));
 
   const [isSwiping, setIsSwiping] = useState(false);
@@ -63,10 +66,6 @@ const Swipeable: FC<SwipeableProps> = ({ actions, children, className, onAction 
     { axis: 'x' }
   );
 
-  const handleMouseClick = (actionId: string) => {
-    onAction(actionId);
-  };
-
   const isTouchDevice =
     !!window.ontouchstart ||
     !!window.navigator.maxTouchPoints ||
@@ -75,8 +74,7 @@ const Swipeable: FC<SwipeableProps> = ({ actions, children, className, onAction 
   return (
     <div
       className={cc({
-        [styles.swipeContainer]: true,
-        [styles.isTouchDevice]: isTouchDevice,
+        [styles.swipeContainer]: isTouchDevice,
       })}
     >
       <animated.div
@@ -90,25 +88,15 @@ const Swipeable: FC<SwipeableProps> = ({ actions, children, className, onAction 
         ])}
         style={props}
       >
-        {children}
+        {children?.(isTouchDevice)}
       </animated.div>
-      {isTouchDevice ? (
+      {isTouchDevice && (
         <div
           className={styles.swipeActions}
           data-color={currentAction?.color}
           data-orientation={currentAction?.orientation}
         >
-          {!!currentAction?.id && currentAction.label}
-        </div>
-      ) : (
-        <div className={styles.hoverActions}>
-          {actions.map(action => (
-            <div className={styles.action} key={action.id}>
-              <Button data-color={action.color} isLink onClick={() => handleMouseClick(action.id)}>
-                {action.label}
-              </Button>
-            </div>
-          ))}
+          {!!currentAction?.id && t(currentAction.labelKey)}
         </div>
       )}
     </div>

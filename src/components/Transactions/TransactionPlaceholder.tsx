@@ -2,13 +2,10 @@ import { random } from 'lodash-es';
 import React, { FC, useRef } from 'react';
 import Placeholder from '../Placeholder';
 import styles from './Transaction.module.scss';
+import TransactionItemPlaceholder from './TransactionItemPlaceholder';
 
 const TransactionPlaceholder: FC = () => {
-  const sizes = useRef({
-    amount: [45, 54, 72][random(2)],
-    category: random(2, 4) * 40,
-    description: random(2, 4) * 40,
-  });
+  const descriptionSize = useRef(random(2, 4) * 40);
 
   return (
     <div className={styles.transaction}>
@@ -17,17 +14,10 @@ const TransactionPlaceholder: FC = () => {
           <Placeholder size={36} />
         </div>
         <div className={styles.description}>
-          <Placeholder size={sizes.current.description} />
+          <Placeholder size={descriptionSize.current} />
         </div>
       </div>
-      <div className={styles.item}>
-        <div>
-          <Placeholder size={sizes.current.category} />
-        </div>
-        <span className={styles.amount}>
-          <Placeholder size={sizes.current.amount} />
-        </span>
-      </div>
+      <TransactionItemPlaceholder />
     </div>
   );
 };

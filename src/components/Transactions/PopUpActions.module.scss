@@ -1,0 +1,49 @@
+@import 'styles/helpers';
+
+.popUpActions {
+  position: absolute;
+  top: 3px;
+  left: 20px;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 24px;
+  color: var(--color-text);
+  cursor: default;
+}
+
+.popUpWrapper {
+  position: absolute;
+  bottom: calc(100% - 12px);
+  left: -16px;
+  padding: 16px;
+  padding-bottom: 16px;
+}
+
+.popUp {
+  background-color: var(--color-modalShadow);
+}
+
+.actionButton {
+  &[data-color='blue'] {
+    background-color: $colorBlue;
+  }
+
+  &[data-color='green'] {
+    background-color: $colorGreen;
+  }
+
+  &[data-color='purple'] {
+    background-color: $colorPurple;
+  }
+
+  &[data-color='red'] {
+    background-color: $colorRed;
+  }
+}
