@@ -1,0 +1,20 @@
+@import 'styles/helpers';
+
+.transactionItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px 2px 72px;
+
+  @include media('>tablet') {
+    padding-top: 8px;
+    padding-bottom: 4px;
+  }
+}
+
+.note {
+  margin-top: 4px;
+}
+
+.amount {
+  margin-left: 24px;
+}
