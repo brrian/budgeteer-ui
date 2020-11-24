@@ -6,10 +6,12 @@
   justify-content: center;
   min-height: 100%;
   padding: 20px;
-}
 
-.form {
-  @include media('>=tablet') {
-    max-width: 360px;
+  form {
+    width: 100%;
+
+    @include media('>=tablet') {
+      max-width: 360px;
+    }
   }
 }

@@ -18,6 +18,7 @@ import ResendVerificationPage from '../../pages/Auth/ResendVerificationPage';
 import ResetPasswordPage from '../../pages/Auth/ResetPasswordPage';
 import TransactionsPage from '../../pages/TransactionsPage';
 import useServiceWorkerUpdater from '../../util/hooks/useServiceWorkerUpdater';
+import PrivateRoute from '../PrivateRoute';
 
 const App: FC = () => {
   useServiceWorkerUpdater();
@@ -31,7 +32,7 @@ const App: FC = () => {
       <Route path={PAGE_REGISTER_VERIFY} component={RegisterVerifyPage} exact />
       <Route path={PAGE_REGISTER} component={RegisterPage} exact />
       <Route path={PAGE_RESET_PASSWORD} component={ResetPasswordPage} exact />
-      <Route path="/" component={TransactionsPage} />
+      <PrivateRoute path="/" component={TransactionsPage} />
     </Switch>
   );
 };

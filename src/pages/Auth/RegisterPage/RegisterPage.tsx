@@ -1,10 +1,9 @@
-import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
 import { PAGE_FORGOT_PASSWORD, PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../../constants';
-import api from '../../../util/helpers/api';
+import { register } from '../../../util/contexts/AuthContext';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -21,32 +20,21 @@ const RegisterPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async ({ email, group, password }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = ({ email, group, password }) => {
     setErrors([]);
     setIsLoading(true);
 
-    const { isValid } = await api.validateGroup(group);
-
-    if (!isValid) {
-      setIsLoading(false);
-      return setErrors([t('invalidGroup')]);
-    }
-
-    const results = await Auth.signUp({
-      username: email,
-      password,
-      attributes: {
-        'custom:groupId': group,
-      },
-    }).catch(error => {
-      setErrors([error.message]);
-    });
-
-    setIsLoading(false);
-
-    if (results && results.user) {
-      history.push(PAGE_REGISTER_VERIFY, { email });
-    }
+    register(email, password, group)
+      .then(() => {
+        history.push(PAGE_REGISTER_VERIFY, { email });
+      })
+      .catch(error => {
+        const message = error.message === 'Invalid group' ? t('invalidGroup') : error.message;
+        setErrors([message]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (

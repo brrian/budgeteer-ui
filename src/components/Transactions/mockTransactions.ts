@@ -1,4 +1,4 @@
-import { Transaction } from '../../util/helpers/api/models';
+import { Transaction } from '../../graphql/models';
 
 const transactions: Transaction[] = [
   {

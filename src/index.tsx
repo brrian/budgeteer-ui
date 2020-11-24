@@ -1,11 +1,12 @@
 import Amplify from '@aws-amplify/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
-import { UserContextProvider } from './util/contexts/UserContext';
+import { AuthContextProvider } from './util/contexts/AuthContext';
 import { initTheme } from './util/helpers/theme';
 
 Amplify.configure({
@@ -25,15 +26,26 @@ Amplify.configure({
   },
 });
 
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      retry: 0,
+      suspense: true,
+    },
+  },
+});
+
 initTheme();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <UserContextProvider>
-        <App />
-      </UserContextProvider>
-    </Router>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <AuthContextProvider>
+        <Router>
+          <App />
+        </Router>
+      </AuthContextProvider>
+    </ReactQueryCacheProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

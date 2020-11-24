@@ -1,15 +1,16 @@
 import cc from 'classcat';
-import React, { FC, useMemo } from 'react';
-import { Transaction as ITransaction } from '../../util/helpers/api/models';
+import React, { FC, memo, useMemo } from 'react';
+import { Categories, Transaction as ITransaction } from '../../graphql/models';
 import styles from './Transaction.module.scss';
 import TransactionItem from './TransactionItem';
 
 interface TransactionProps {
-  onAction: (action: string, splitIndex?: number) => void;
+  categories: Categories;
+  onAction: (action: string, transaction: ITransaction, splitIndex?: number) => void;
   transaction: ITransaction;
 }
 
-const Transaction: FC<TransactionProps> = ({ onAction, transaction }) => {
+const Transaction: FC<TransactionProps> = ({ categories, onAction, transaction }) => {
   const { date, description, disabled, splits } = transaction;
 
   const isFullyDisabled = useMemo(() => {
@@ -19,7 +20,7 @@ const Transaction: FC<TransactionProps> = ({ onAction, transaction }) => {
   const handleSwipeAction = (action: string, index: number) => {
     const splitIndex = index !== 0 ? index - 1 : undefined;
 
-    onAction(action, splitIndex);
+    onAction(action, transaction, splitIndex);
   };
 
   const combinedTransactions = [transaction, ...splits];
@@ -38,6 +39,7 @@ const Transaction: FC<TransactionProps> = ({ onAction, transaction }) => {
       {combinedTransactions.map((item, index) => (
         <TransactionItem
           {...item}
+          categories={categories}
           key={index}
           onAction={action => handleSwipeAction(action, index)}
         />
@@ -46,4 +48,4 @@ const Transaction: FC<TransactionProps> = ({ onAction, transaction }) => {
   );
 };
 
-export default Transaction;
+export default memo(Transaction);
