@@ -1,9 +1,9 @@
-import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
 import { PAGE_LOGIN, PAGE_REGISTER_VERIFY } from '../../../constants';
+import { resendVerificationCode } from '../../../util/contexts/AuthContext';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -23,17 +23,20 @@ const ResendVerificationPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async ({ email }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = ({ email }) => {
     setErrors([]);
     setIsLoading(true);
 
-    await Auth.resendSignUp(email).catch(error => {
-      setErrors([error.message]);
-    });
-
-    setIsLoading(false);
-
-    history.push(PAGE_REGISTER_VERIFY, { email });
+    resendVerificationCode(email)
+      .then(() => {
+        history.push(PAGE_REGISTER_VERIFY, { email });
+      })
+      .catch(error => {
+        setErrors([error.message]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const defaultEmail = location.state?.email;

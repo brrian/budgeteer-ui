@@ -64,7 +64,6 @@ const AuthForm = <TFormValues extends FormValues = FormValues>({
     <div className={styles.container}>
       <FormProvider {...formProps}>
         <Form
-          className={styles.form}
           errors={errors}
           Footer={children}
           heading={heading}

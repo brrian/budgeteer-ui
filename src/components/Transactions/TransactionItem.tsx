@@ -1,12 +1,13 @@
 import cc from 'classcat';
 import React, { FC, useState } from 'react';
-import { useUserState } from '../../util/contexts/UserContext';
+import { Categories } from '../../graphql/models';
 import Swipeable from '../Swipeable';
 import PopUpActions from './PopUpActions';
 import styles from './TransactionItem.module.scss';
 
 interface TransactionItemProps {
   amount: number;
+  categories: Categories;
   categoryId: string;
   className?: string;
   note: string | null;
@@ -58,13 +59,12 @@ const ACTIONS = [
 
 const TransactionItem: FC<TransactionItemProps> = ({
   amount,
+  categories,
   categoryId,
   className,
   note,
   onAction,
 }) => {
-  const { categories } = useUserState();
-
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {

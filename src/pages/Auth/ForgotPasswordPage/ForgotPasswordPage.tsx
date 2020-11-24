@@ -1,9 +1,9 @@
-import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
 import { PAGE_LOGIN, PAGE_RESET_PASSWORD } from '../../../constants';
+import { sendResetCode } from '../../../util/contexts/AuthContext';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -18,18 +18,19 @@ const ForgotPasswordPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async ({ email }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = ({ email }) => {
     setIsLoading(true);
 
-    const result = await Auth.forgotPassword(email).catch(error => {
-      setErrors([error.message]);
-    });
-
-    setIsLoading(false);
-
-    if (result) {
-      history.push(PAGE_RESET_PASSWORD, { email });
-    }
+    sendResetCode(email)
+      .then(() => {
+        history.push(PAGE_RESET_PASSWORD, { email });
+      })
+      .catch(error => {
+        setErrors([error.message]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (

@@ -1,9 +1,8 @@
-export interface FetchGroupResponse {
-  name: string;
-}
+import { QueryResultBase } from 'react-query';
 
-export interface ValidateGroupResponse {
-  isValid: boolean;
+export interface SuspendedQueryResult<TResult, TError = unknown>
+  extends QueryResultBase<TResult, TError> {
+  data: TResult;
 }
 
 export type Categories = Map<string, Category>;
@@ -11,6 +10,12 @@ export type Categories = Map<string, Category>;
 interface Category {
   id: string;
   label: string;
+}
+
+export interface Group {
+  categories: Categories;
+  id: string;
+  name: string;
 }
 
 export interface Transaction {

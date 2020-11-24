@@ -1,25 +1,22 @@
-import Auth from '@aws-amplify/auth';
 import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PAGE_LOGIN } from '../../../constants';
-import { useUserDispatch } from '../../../util/contexts/UserContext';
+import { useAuth } from '../../../util/contexts/AuthContext';
 
 const LogoutPage: FC = () => {
-  const history = useHistory();
+  const { logout } = useAuth();
 
-  const dispatch = useUserDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     const signOut = async () => {
-      await Auth.signOut();
-
-      dispatch({ type: 'unsetUser' });
+      await logout();
 
       history.push(PAGE_LOGIN);
     };
 
     signOut();
-  }, [dispatch, history]);
+  }, [history, logout]);
 
   return null;
 };

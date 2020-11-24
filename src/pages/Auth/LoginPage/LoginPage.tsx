@@ -1,4 +1,3 @@
-import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -9,7 +8,7 @@ import {
   PAGE_REGISTER_VERIFY,
   PAGE_TRANSACTIONS,
 } from '../../../constants';
-import { getCurrentUser, useUserDispatch } from '../../../util/contexts/UserContext';
+import { useAuth } from '../../../util/contexts/AuthContext';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -23,37 +22,35 @@ interface LocationState {
 }
 
 const LoginPage: FC = () => {
+  const { login } = useAuth();
   const location = useLocation<LocationState>();
   const history = useHistory();
 
   const { t } = useTranslation('auth');
 
-  const userDispatch = useUserDispatch();
-
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async ({ email, password }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = ({ email, password }) => {
     setErrors([]);
     setIsLoading(true);
 
-    const user = await Auth.signIn(email, password).catch(error => {
-      if (error.message === 'User is not confirmed.') {
-        return history.push(PAGE_REGISTER_VERIFY, { email });
-      }
+    login(email, password)
+      .then(() => {
+        const route = location.state?.redirect ?? PAGE_TRANSACTIONS;
 
-      return setErrors([error.message]);
-    });
+        history.push(route);
+      })
+      .catch(error => {
+        if (error.message === 'User is not confirmed.') {
+          return history.push(PAGE_REGISTER_VERIFY, { email });
+        }
 
-    setIsLoading(false);
-
-    if (user) {
-      const route = location.state?.redirect ?? PAGE_TRANSACTIONS;
-
-      await getCurrentUser(userDispatch);
-
-      history.push(route);
-    }
+        setErrors([error.message]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const defaultEmail = location.state?.email;

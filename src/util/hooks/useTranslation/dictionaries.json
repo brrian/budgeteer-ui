@@ -38,9 +38,11 @@
       "note": "Note",
       "save": "Save",
       "selectCategory": "Select category",
+      "somethingWentWrong": "Oops! Something went wrong.",
       "split": "Split",
       "splitTransaction": "Split Transaction",
       "submit": "Submit",
+      "tryAgain": "Try again.",
       "updateAvailable": "A new update date is available. Restart?"
     },
     "validation": {

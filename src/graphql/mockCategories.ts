@@ -1,4 +1,4 @@
-import { Categories } from '../../helpers/api/models';
+import { Categories } from './models';
 
 const categories: Categories = new Map([
   ['3', { id: '3', label: 'Automotive' }],

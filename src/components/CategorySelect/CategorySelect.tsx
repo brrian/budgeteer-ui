@@ -1,11 +1,11 @@
 import React, { forwardRef, SelectHTMLAttributes, useMemo } from 'react';
-import { useUserState } from '../../util/contexts/UserContext';
+import useCategories from '../../util/hooks/useCategories';
 
 type CategorySelectProps = SelectHTMLAttributes<HTMLSelectElement>;
 
 const CategorySelect = forwardRef<HTMLSelectElement, CategorySelectProps>(
   ({ placeholder, ...remainingProps }, ref) => {
-    const { categories } = useUserState();
+    const categories = useCategories();
 
     const categoryOptions = useMemo(() => Array.from(categories.values()), [categories]);
 

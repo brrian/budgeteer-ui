@@ -1,25 +1,26 @@
 import React, { FC } from 'react';
-import { Transaction as ITransaction } from '../../util/helpers/api/models';
+import { Transaction as ITransaction } from '../../graphql/models';
+import useCategories from '../../util/hooks/useCategories';
+import transactions from './mockTransactions';
 import Transaction from './Transaction';
-import TransactionPlaceholder from './TransactionPlaceholder';
 
 interface TransactionProps {
-  onAction: (action: string, transactionIndex: number, splitIndex?: number) => void;
-  transactions?: ITransaction[];
+  onAction: (action: string, transaction: ITransaction, splitIndex?: number) => void;
 }
 
-const Transactions: FC<TransactionProps> = ({ onAction, transactions }) => {
+const Transactions: FC<TransactionProps> = ({ onAction }) => {
+  const categories = useCategories();
+
   return (
     <div>
-      {transactions
-        ? transactions.map((transaction, index) => (
-            <Transaction
-              key={index}
-              onAction={(action, splitIndex) => onAction(action, index, splitIndex)}
-              transaction={transaction}
-            />
-          ))
-        : [...Array(12)].map((_item, index) => <TransactionPlaceholder key={index} />)}
+      {transactions.map((transaction, index) => (
+        <Transaction
+          categories={categories}
+          key={index}
+          onAction={onAction}
+          transaction={transaction}
+        />
+      ))}
     </div>
   );
 };

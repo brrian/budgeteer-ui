@@ -1,16 +1,17 @@
-import React, { ChangeEvent, FC, useRef } from 'react';
+import React, { ChangeEvent, FC, lazy, Suspense, useCallback, useRef } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories from '../../components/BudgetCategories';
-import Transactions from '../../components/Transactions';
-import { Transaction } from '../../util/helpers/api/models';
+import GenericErrorBoundary from '../../components/GenericErrorBoundary';
+import Transactions, { TransactionsPlaceholder } from '../../components/Transactions';
+import { Transaction } from '../../graphql/models';
 import { getTheme, setTheme } from '../../util/helpers/theme';
-import useAuth from '../../util/hooks/useAuth';
 import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
-import DeleteModal from './DeleteModal';
-import mockTransactions from './mockTransactions';
-import TransactionModal, { TransactionFormValues } from './TransactionModal';
+import { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
+
+const DeleteModal = lazy(() => import('./DeleteModal'));
+const TransactionModal = lazy(() => import('./TransactionModal'));
 
 const COLLAPSED_HEIGHT = 40;
 const EXPANDED_HEIGHT = 286;
@@ -27,8 +28,6 @@ type TransactionModalProps = {
 };
 
 const TransactionsPage: FC = () => {
-  const auth = useAuth();
-
   const { t } = useTranslation();
 
   const transactionModalProps = useModal<TransactionModalProps>();
@@ -41,6 +40,30 @@ const TransactionsPage: FC = () => {
     config: config.stiff,
     height: COLLAPSED_HEIGHT,
   }));
+
+  const handleTransactionAction = useCallback(
+    (action: string, transaction: Transaction, splitIndex?: number) => {
+      if (action === 'edit') {
+        transactionModalProps.openModal({
+          defaultValues: splitIndex === undefined ? transaction : transaction.splits[splitIndex],
+          headingLabel: t('editTransaction'),
+          onSubmit: data => handleTransactionUpdate(transaction, data),
+          submitLabel: t('save'),
+        });
+      } else if (action === 'split') {
+        transactionModalProps.openModal({
+          headingLabel: t('splitTransaction'),
+          onSubmit: data => handleTransactionSplit(transaction, splitIndex ?? null, data),
+          submitLabel: t('split'),
+        });
+      } else if (action === 'delete') {
+        deleteModalProps.openModal({
+          onDelete: () => handleTransactionDelete(transaction),
+        });
+      }
+    },
+    []
+  );
 
   const handleBudgetDoubleClick = () => {
     toggleBudgetMenu();
@@ -66,33 +89,6 @@ const TransactionsPage: FC = () => {
     navigator.vibrate?.(70);
 
     isExpanded.current = !isExpanded.current;
-  };
-
-  const handleTransactionAction = (
-    action: string,
-    transactionIndex: number,
-    splitIndex?: number
-  ) => {
-    const transaction = mockTransactions[transactionIndex];
-
-    if (action === 'edit') {
-      transactionModalProps.openModal({
-        defaultValues: splitIndex === undefined ? transaction : transaction.splits[splitIndex],
-        headingLabel: t('editTransaction'),
-        onSubmit: data => handleTransactionUpdate(transaction, data),
-        submitLabel: t('save'),
-      });
-    } else if (action === 'split') {
-      transactionModalProps.openModal({
-        headingLabel: t('splitTransaction'),
-        onSubmit: data => handleTransactionSplit(transaction, splitIndex ?? null, data),
-        submitLabel: t('split'),
-      });
-    } else if (action === 'delete') {
-      deleteModalProps.openModal({
-        onDelete: () => handleTransactionDelete(transaction),
-      });
-    }
   };
 
   const handleThemeToggle = (event: ChangeEvent<HTMLInputElement>) => {
@@ -136,28 +132,27 @@ const TransactionsPage: FC = () => {
         onTouchStart={handleBudgetTouchStart}
         style={{ height }}
       >
-        <BudgetCategories categories={auth.isReady ? [] : undefined} />
+        <BudgetCategories categories={[]} />
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
-        <>
-          <Transactions
-            onAction={handleTransactionAction}
-            transactions={auth.isReady ? mockTransactions : undefined}
+        <GenericErrorBoundary>
+          <Suspense fallback={<TransactionsPlaceholder />}>
+            <Transactions onAction={handleTransactionAction} />
+          </Suspense>
+        </GenericErrorBoundary>
+        <label className={styles.tempDarkModeContainer}>
+          <input
+            defaultChecked={getTheme() === 'dark'}
+            onChange={handleThemeToggle}
+            type="checkbox"
           />
-          {auth.isReady && (
-            <label className={styles.tempDarkModeContainer}>
-              <input
-                defaultChecked={getTheme() === 'dark'}
-                onChange={handleThemeToggle}
-                type="checkbox"
-              />
-              Dark mode
-            </label>
-          )}
-        </>
+          Dark mode
+        </label>
       </animated.div>
-      {transactionModalProps.isVisible && <TransactionModal {...transactionModalProps} />}
-      {deleteModalProps.isVisible && <DeleteModal {...deleteModalProps} />}
+      <Suspense fallback={null}>
+        {transactionModalProps.isVisible && <TransactionModal {...transactionModalProps} />}
+        {deleteModalProps.isVisible && <DeleteModal {...deleteModalProps} />}
+      </Suspense>
     </div>
   );
 };

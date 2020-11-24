@@ -1,9 +1,9 @@
-import Auth from '@aws-amplify/auth';
 import React, { FC, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import AuthForm from '../../../components/AuthForm';
 import { PAGE_LOGIN, PAGE_REGISTER_RESEND, PAGE_TRANSACTIONS } from '../../../constants';
+import { verifyAccount } from '../../../util/contexts/AuthContext';
 import useTranslation from '../../../util/hooks/useTranslation';
 
 interface FormValues {
@@ -24,19 +24,20 @@ const RegisterVerifyPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async ({ email, code }) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = ({ email, code }) => {
     setErrors([]);
     setIsLoading(true);
 
-    const result = await Auth.confirmSignUp(email, code).catch(error => {
-      setErrors([error.message]);
-    });
-
-    setIsLoading(false);
-
-    if (result === 'SUCCESS') {
-      history.push(PAGE_TRANSACTIONS);
-    }
+    verifyAccount(email, code)
+      .then(() => {
+        history.push(PAGE_TRANSACTIONS);
+      })
+      .catch(error => {
+        setErrors([error.message]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const defaultEmail = location.state?.email;
