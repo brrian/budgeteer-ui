@@ -7,7 +7,10 @@ const CategorySelect = forwardRef<HTMLSelectElement, CategorySelectProps>(
   ({ placeholder, ...remainingProps }, ref) => {
     const categories = useCategories();
 
-    const categoryOptions = useMemo(() => Array.from(categories.values()), [categories]);
+    const categoryOptions = useMemo(
+      () => Array.from(categories.entries()).map(([value, label]) => ({ label, value })),
+      [categories]
+    );
 
     return (
       <select {...remainingProps} ref={ref}>
@@ -16,8 +19,8 @@ const CategorySelect = forwardRef<HTMLSelectElement, CategorySelectProps>(
             {placeholder}
           </option>
         )}
-        {categoryOptions.map(({ id, label }) => (
-          <option key={id} value={id}>
+        {categoryOptions.map(({ label, value }) => (
+          <option key={value} value={value}>
             {label}
           </option>
         ))}

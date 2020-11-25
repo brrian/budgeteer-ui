@@ -43,6 +43,7 @@
       "splitTransaction": "Split Transaction",
       "submit": "Submit",
       "tryAgain": "Try again.",
+      "unknownCategory": "Unknown Category",
       "updateAvailable": "A new update date is available. Restart?"
     },
     "validation": {

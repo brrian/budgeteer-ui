@@ -1,6 +1,7 @@
 import cc from 'classcat';
 import React, { FC, useState } from 'react';
 import { Categories } from '../../graphql/models';
+import useTranslation from '../../util/hooks/useTranslation';
 import Swipeable from '../Swipeable';
 import PopUpActions from './PopUpActions';
 import styles from './TransactionItem.module.scss';
@@ -65,6 +66,8 @@ const TransactionItem: FC<TransactionItemProps> = ({
   note,
   onAction,
 }) => {
+  const { t } = useTranslation();
+
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -85,7 +88,7 @@ const TransactionItem: FC<TransactionItemProps> = ({
         >
           {!isTouchDevice && isHovered && <PopUpActions actions={ACTIONS} onAction={onAction} />}
           <div>
-            {categories.get(categoryId)?.label}
+            {categories.get(categoryId) ?? t('unknownCategory')}
             <div className={styles.note}>{note && ` *${note}*`}</div>
           </div>
           <span className={styles.amount}>${amount.toFixed(2)}</span>
