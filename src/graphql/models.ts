@@ -5,12 +5,7 @@ export interface SuspendedQueryResult<TResult, TError = unknown>
   data: TResult;
 }
 
-export type Categories = Map<string, Category>;
-
-interface Category {
-  id: string;
-  label: string;
-}
+export type Categories = Map<string, string>;
 
 export interface Group {
   categories: Categories;

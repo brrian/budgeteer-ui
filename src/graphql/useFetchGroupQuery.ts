@@ -1,13 +1,14 @@
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import useClient from '../util/hooks/useClient/useClient';
-import mockCategories from './mockCategories';
 import { Group, SuspendedQueryResult } from './models';
 
 interface FetchGroupResponse {
   group: {
+    categories: Array<[string, string]>;
     id: string;
     name: string;
+    runningBalance: number;
   };
 }
 
@@ -20,6 +21,7 @@ export default function useFetchGroupQuery(): SuspendedQueryResult<Group> {
       const { group } = await client.request<FetchGroupResponse>(gql`
         query {
           group {
+            categories
             id
             name
           }
@@ -28,7 +30,7 @@ export default function useFetchGroupQuery(): SuspendedQueryResult<Group> {
 
       return {
         ...group,
-        categories: mockCategories,
+        categories: new Map(group.categories),
       };
     },
     {
