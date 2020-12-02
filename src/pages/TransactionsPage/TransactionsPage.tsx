@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, lazy, Suspense, useCallback, useRef } from 'react';
 import { animated, config, useSpring } from 'react-spring';
-import BudgetCategories from '../../components/BudgetCategories';
+import BudgetCategories, { BudgetCategoriesPlaceholder } from '../../components/BudgetCategories';
 import GenericErrorBoundary from '../../components/GenericErrorBoundary';
 import Transactions, { TransactionsPlaceholder } from '../../components/Transactions';
 import { Transaction } from '../../graphql/models';
@@ -132,7 +132,9 @@ const TransactionsPage: FC = () => {
         onTouchStart={handleBudgetTouchStart}
         style={{ height }}
       >
-        <BudgetCategories categories={[]} />
+        <Suspense fallback={<BudgetCategoriesPlaceholder />}>
+          <BudgetCategories month={12} year={2020} />
+        </Suspense>
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>
         <GenericErrorBoundary>

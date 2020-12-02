@@ -1,7 +1,7 @@
 import cc from 'classcat';
 import { random } from 'lodash-es';
 import React, { FC } from 'react';
-import Placeholder from '../../Placeholder';
+import Placeholder from '../Placeholder';
 import styles from './Category.module.scss';
 
 const CategoryPlaceholder: FC = () => {

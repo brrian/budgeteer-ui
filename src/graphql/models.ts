@@ -5,12 +5,23 @@ export interface SuspendedQueryResult<TResult, TError = unknown>
   data: TResult;
 }
 
+export interface Budget {
+  categories: BudgetCategory[];
+  total: number;
+}
+
+interface BudgetCategory {
+  categoryId: string;
+  limit: number;
+}
+
 export type Categories = Map<string, string>;
 
 export interface Group {
   categories: Categories;
   id: string;
   name: string;
+  runningBalance: number;
 }
 
 export interface Transaction {

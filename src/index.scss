@@ -29,6 +29,7 @@ html {
   --color-placeholder: #{$colorGray300};
   --color-progressBarBg: #{$colorGray100};
   --color-progressBarBorder: #{$colorGray800};
+  --color-progressBarMarker: #{$colorGray800};
   --color-swipeBorder: #{$colorGray100};
   --color-text: #{$colorGray800};
   --color-textAlt: #{$colorGray400};
@@ -41,7 +42,8 @@ html {
     --color-link: #{$colorGray50};
     --color-placeholder: #{$colorGray700};
     --color-progressBarBg: #{$colorGray700};
-    --color-progressBarBorder: transparent;
+    --color-progressBarBorder: #{$colorGray900};
+    --color-progressBarMarker: #{$colorGray900};
     --color-swipeBorder: rgba(#{rgb($colorGray900)}, 0.2);
     --color-text: #{$colorGray200};
     --color-textAlt: #{$colorGray700};
