@@ -1,1 +1,4 @@
-export type Category = any;
+export type Category = {
+  categoryId: string;
+  limit: number;
+};

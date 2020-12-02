@@ -24,6 +24,7 @@ export default function useFetchGroupQuery(): SuspendedQueryResult<Group> {
             categories
             id
             name
+            runningBalance
           }
         }
       `);

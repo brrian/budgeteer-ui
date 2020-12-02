@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { CategoryPlaceholder } from '../Category';
+import CategoryPlaceholder from './CategoryPlaceholder';
 import styles from './Categories.module.scss';
 
 const CategoriesPlaceholder: FC = () => {
   return (
     <div className={styles.categories}>
-      {[...Array(4)].map((item, index) => (
+      {[...Array(4)].map((_item, index) => (
         <CategoryPlaceholder key={index} />
       ))}
     </div>
