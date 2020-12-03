@@ -1,14 +1,20 @@
 import React, { FC } from 'react';
 import { Transaction as ITransaction } from '../../graphql/models';
+import useFetchMonthOverviewQuery from '../../graphql/useFetchMonthOverviewQuery';
 import useCategories from '../../util/hooks/useCategories';
-import transactions from './mockTransactions';
 import Transaction from './Transaction';
 
 interface TransactionProps {
+  month: number;
   onAction: (action: string, transaction: ITransaction, splitIndex?: number) => void;
+  year: number;
 }
 
-const Transactions: FC<TransactionProps> = ({ onAction }) => {
+const Transactions: FC<TransactionProps> = ({ month, onAction, year }) => {
+  const {
+    data: { transactions },
+  } = useFetchMonthOverviewQuery(month, year);
+
   const categories = useCategories();
 
   return (

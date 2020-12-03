@@ -142,7 +142,7 @@ const TransactionsPage: FC = () => {
       <animated.div className={styles.transactions} style={{ top: height }}>
         <GenericErrorBoundary>
           <Suspense fallback={<TransactionsPlaceholder />}>
-            <Transactions onAction={handleTransactionAction} />
+            <Transactions month={month} onAction={handleTransactionAction} year={year} />
           </Suspense>
         </GenericErrorBoundary>
         <label className={styles.tempDarkModeContainer}>
