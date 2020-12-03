@@ -3,18 +3,23 @@ import React, { FC } from 'react';
 import styles from './Heading.module.scss';
 
 interface HeadingProps {
+  budgetTotal: number;
   date: Date;
   runningBalance?: number;
-  spending: number;
-  total: number;
+  totalSpending: number;
 }
 
-const Heading: FC<HeadingProps> = ({ date, runningBalance, spending, total }) => {
+const Heading: FC<HeadingProps> = ({ budgetTotal, date, runningBalance, totalSpending }) => {
+  let targetSpending = budgetTotal;
+  if (budgetTotal) {
+    targetSpending += budgetTotal;
+  }
+
   return (
     <div className={styles.heading}>
       <span className={styles.monthLabel}>{format(date, 'MMM yyyy')}</span>
       <span>
-        ${spending.toLocaleString()} of {total.toLocaleString()}
+        ${Math.round(totalSpending).toLocaleString()} of {targetSpending.toLocaleString()}
         {runningBalance !== undefined && ` (${runningBalance})`}
       </span>
     </div>
