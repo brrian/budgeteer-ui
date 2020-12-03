@@ -11,8 +11,8 @@ interface HeadingProps {
 
 const Heading: FC<HeadingProps> = ({ budgetTotal, date, runningBalance, totalSpending }) => {
   let targetSpending = budgetTotal;
-  if (budgetTotal) {
-    targetSpending += budgetTotal;
+  if (runningBalance) {
+    targetSpending += runningBalance;
   }
 
   return (
