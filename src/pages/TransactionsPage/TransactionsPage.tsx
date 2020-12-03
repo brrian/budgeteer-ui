@@ -9,6 +9,7 @@ import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
 import { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
+import useMonthYearParams from './util/useMonthYearParams';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 const TransactionModal = lazy(() => import('./TransactionModal'));
@@ -29,6 +30,8 @@ type TransactionModalProps = {
 
 const TransactionsPage: FC = () => {
   const { t } = useTranslation();
+
+  const { month, year } = useMonthYearParams();
 
   const transactionModalProps = useModal<TransactionModalProps>();
   const deleteModalProps = useModal<DeleteModalProps>();
@@ -133,7 +136,7 @@ const TransactionsPage: FC = () => {
         style={{ height }}
       >
         <Suspense fallback={<BudgetCategoriesPlaceholder />}>
-          <BudgetCategories month={12} year={2020} />
+          <BudgetCategories month={month} year={year} />
         </Suspense>
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>

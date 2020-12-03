@@ -32,7 +32,11 @@ const App: FC = () => {
       <Route path={PAGE_REGISTER_VERIFY} component={RegisterVerifyPage} exact />
       <Route path={PAGE_REGISTER} component={RegisterPage} exact />
       <Route path={PAGE_RESET_PASSWORD} component={ResetPasswordPage} exact />
-      <PrivateRoute path="/" component={TransactionsPage} />
+      <PrivateRoute
+        component={TransactionsPage}
+        exact
+        path="/:month(jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)?/:year(\d{4})?"
+      />
     </Switch>
   );
 };
