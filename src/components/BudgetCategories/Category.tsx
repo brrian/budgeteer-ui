@@ -39,7 +39,7 @@ const Category: FC<CategoryProps> = ({ label, limit, monthProgress, percentPerDa
       </div>
       <div className={styles.labels}>
         <span>
-          {label}: ${spending.toLocaleString()}
+          {label}: ${Math.round(spending).toLocaleString()}
           {monthProgress < 100 && ` (${spendingDeltaLabel})`}
         </span>
         <span>${limit.toLocaleString()}</span>

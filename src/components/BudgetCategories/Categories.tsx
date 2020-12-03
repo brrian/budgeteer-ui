@@ -1,28 +1,16 @@
 import { getDate, getDaysInMonth } from 'date-fns';
 import React, { FC } from 'react';
-import useCategories from '../../util/hooks/useCategories';
-import useTranslation from '../../util/hooks/useTranslation';
 import styles from './Categories.module.scss';
 import Category from './Category';
-import { Category as ICategory } from './models';
+import { BudgetCategory } from './models';
 
 interface CategoriesProps {
-  categories: ICategory[];
+  categories: BudgetCategory[];
   date: Date;
   isCurrentMonth: boolean;
-  otherCategoryLimit: number;
 }
 
-const Categories: FC<CategoriesProps> = ({
-  categories,
-  date,
-  isCurrentMonth,
-  otherCategoryLimit,
-}) => {
-  const { t } = useTranslation();
-
-  const categoryMap = useCategories();
-
+const Categories: FC<CategoriesProps> = ({ categories, date, isCurrentMonth }) => {
   const daysInMonth = getDaysInMonth(new Date());
   const percentPerDay = 100 / daysInMonth;
 
@@ -30,25 +18,16 @@ const Categories: FC<CategoriesProps> = ({
 
   return (
     <div className={styles.categories}>
-      {categories.map(({ categoryId, limit }) => (
+      {categories.map(({ label, limit, spending }) => (
         <Category
-          key={categoryId}
-          label={categoryMap.get(categoryId) ?? t('unknownCategory')}
+          key={`${label}-${limit}`}
+          label={label}
           limit={limit}
           monthProgress={monthProgress}
           percentPerDay={percentPerDay}
-          spending={5}
+          spending={spending}
         />
       ))}
-      {otherCategoryLimit > 0 && (
-        <Category
-          label={t('other')}
-          limit={otherCategoryLimit}
-          monthProgress={monthProgress}
-          percentPerDay={percentPerDay}
-          spending={235}
-        />
-      )}
     </div>
   );
 };

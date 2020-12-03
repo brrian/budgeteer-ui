@@ -4,6 +4,7 @@ import { useFetchGroupQuery } from '../../graphql';
 import useFetchMonthOverviewQuery from '../../graphql/useFetchMonthOverviewQuery';
 import Categories from './Categories';
 import Heading from './Heading';
+import useBudgetCategories from './util/useBudgetCategories';
 
 interface BudgetCategoriesProps {
   month: number;
@@ -14,30 +15,25 @@ const BudgetCategories: FC<BudgetCategoriesProps> = ({ month, year }) => {
   const { data: group } = useFetchGroupQuery();
 
   const {
-    data: { budget },
+    data: { budget, transactions },
   } = useFetchMonthOverviewQuery(month, year);
 
+  const categories = useBudgetCategories(budget, transactions);
+
+  const totalSpending = categories.reduce((accTotal, { spending }) => accTotal + spending, 0);
+
   const date = parse(`${month} ${year}`, 'M yyyy', new Date());
-
   const isCurrentMonth = isSameMonth(date, new Date());
-
-  const categoriesTotal = budget.categories.reduce((accCount, { limit }) => accCount + limit, 0);
-  const otherCategoryLimit = budget.total - categoriesTotal;
 
   return (
     <>
       <Heading
+        budgetTotal={budget.total}
         date={date}
         runningBalance={isCurrentMonth ? group.runningBalance : undefined}
-        spending={1000}
-        total={budget.total}
+        totalSpending={totalSpending}
       />
-      <Categories
-        categories={budget.categories}
-        date={date}
-        isCurrentMonth={isCurrentMonth}
-        otherCategoryLimit={otherCategoryLimit}
-      />
+      <Categories categories={categories} date={date} isCurrentMonth={isCurrentMonth} />
     </>
   );
 };

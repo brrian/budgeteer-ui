@@ -33,7 +33,7 @@ const Transaction: FC<TransactionProps> = ({ categories, onAction, transaction }
       })}
     >
       <div className={styles.heading}>
-        <div className={styles.date}>{date.substring(5).replace(/0/g, '').replace('-', '/')}</div>
+        <div className={styles.date}>{date.substring(5).replace('-0', '-').replace('-', '/')}</div>
         <div className={styles.description}>{description}</div>
       </div>
       {combinedTransactions.map((item, index) => (
