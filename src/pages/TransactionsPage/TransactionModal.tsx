@@ -17,7 +17,7 @@ type TransactionModalProps = ModalState<{
 
 export interface TransactionFormValues {
   amount: string;
-  category: string;
+  categoryId: string;
   disabled?: boolean;
   note?: string;
 }
@@ -32,7 +32,7 @@ const TransactionModal: FC<TransactionModalProps> = ({
   const formProps = useForm<TransactionFormValues>({
     defaultValues: {
       amount: defaultValues?.amount ? `${defaultValues.amount.toFixed(2)}` : undefined,
-      category: defaultValues?.categoryId ?? '',
+      categoryId: defaultValues?.categoryId ?? '',
       disabled: defaultValues?.disabled,
       note: defaultValues?.note ?? undefined,
     },
@@ -58,7 +58,7 @@ const TransactionModal: FC<TransactionModalProps> = ({
             <CategorySelect
               autoFocus
               id="category-select"
-              name="category"
+              name="categoryId"
               placeholder={t('selectCategory')}
               ref={formProps.register({ required: true })}
             />

@@ -4,11 +4,13 @@ import BudgetCategories, { BudgetCategoriesPlaceholder } from '../../components/
 import GenericErrorBoundary from '../../components/GenericErrorBoundary';
 import Transactions, { TransactionsPlaceholder } from '../../components/Transactions';
 import { Transaction } from '../../graphql/models';
+import useUpdateTransactionMutation from '../../graphql/useUpdateTransactionMutation';
 import { getTheme, setTheme } from '../../util/helpers/theme';
 import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
 import { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
+import calculateAmount from './util/calculateAmount';
 import useMonthYearParams from './util/useMonthYearParams';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
@@ -32,6 +34,8 @@ const TransactionsPage: FC = () => {
   const { t } = useTranslation();
 
   const { month, year } = useMonthYearParams();
+
+  const [updateTransaction] = useUpdateTransactionMutation();
 
   const transactionModalProps = useModal<TransactionModalProps>();
   const deleteModalProps = useModal<DeleteModalProps>();
@@ -119,10 +123,13 @@ const TransactionsPage: FC = () => {
   };
 
   const handleTransactionUpdate = (transaction: Transaction, data: TransactionFormValues) => {
-    // eslint-disable-next-line no-console
-    console.log('update transaction...', {
-      transaction,
-      data,
+    transactionModalProps.closeModal();
+
+    updateTransaction({
+      ...data,
+      amount: data.amount ? calculateAmount(data.amount) : transaction.amount,
+      date: transaction.date,
+      id: transaction.id,
     });
   };
 
