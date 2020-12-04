@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { Budget, Transaction } from '../../../graphql/models';
+import { Budget, Transactions } from '../../../graphql/models';
 import useCategories from '../../../util/hooks/useCategories';
 import useTranslation from '../../../util/hooks/useTranslation';
 import { BudgetCategory } from '../models';
 
 export default function useBudgetCategories(
   budget: Budget,
-  transactions: Transaction[]
+  transactions: Transactions
 ): BudgetCategory[] {
   const { t } = useTranslation();
 
@@ -48,13 +48,13 @@ export default function useBudgetCategories(
     };
 
     // Calculate spending based on transaction category
-    for (const transaction of transactions) {
+    transactions.forEach(transaction => {
       addSpending(transaction.categoryId, transaction.amount);
 
       for (const split of transaction.splits) {
         addSpending(split.categoryId, split.amount);
       }
-    }
+    });
 
     return Array.from(categories.values());
   }, [budget, transactions]);

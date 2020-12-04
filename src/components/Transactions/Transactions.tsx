@@ -19,7 +19,7 @@ const Transactions: FC<TransactionProps> = ({ month, onAction, year }) => {
 
   return (
     <div>
-      {transactions.map((transaction, index) => (
+      {Array.from(transactions.values()).map((transaction, index) => (
         <Transaction
           categories={categories}
           key={index}

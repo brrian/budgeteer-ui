@@ -1,22 +1,17 @@
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import useClient from '../util/hooks/useClient/useClient';
-import { Budget, SuspendedQueryResult, Transaction } from './models';
+import { Budget, MonthOverview, SuspendedQueryResult, Transaction } from './models';
 
 interface FetchMonthOverviewResponse {
   budgetByMonthYear: Budget;
   transactionsByMonthYear: Transaction[];
 }
 
-interface FetchMonthOverviewResult {
-  budget: Budget;
-  transactions: Transaction[];
-}
-
 export default function useFetchMonthOverviewQuery(
   month: number,
   year: number = new Date().getFullYear()
-): SuspendedQueryResult<FetchMonthOverviewResult> {
+): SuspendedQueryResult<MonthOverview> {
   const client = useClient();
 
   return useQuery(
@@ -61,11 +56,13 @@ export default function useFetchMonthOverviewQuery(
 
       return {
         budget: budgetByMonthYear,
-        transactions: transactionsByMonthYear,
+        transactions: new Map(
+          transactionsByMonthYear.map(transaction => [transaction.id, transaction])
+        ),
       };
     },
     {
       staleTime: 1000 * 60 * 60 * 2, // 2 hours
     }
-  ) as SuspendedQueryResult<FetchMonthOverviewResult>;
+  ) as SuspendedQueryResult<MonthOverview>;
 }

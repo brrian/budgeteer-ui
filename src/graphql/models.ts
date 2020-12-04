@@ -5,6 +5,11 @@ export interface SuspendedQueryResult<TResult, TError = unknown>
   data: TResult;
 }
 
+export interface MonthOverview {
+  budget: Budget;
+  transactions: Transactions;
+}
+
 export interface Budget {
   categories: BudgetCategory[];
   total: number;
@@ -23,6 +28,8 @@ export interface Group {
   name: string;
   runningBalance: number;
 }
+
+export type Transactions = Map<string, Transaction>;
 
 export interface Transaction {
   id: string;
