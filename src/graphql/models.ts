@@ -44,7 +44,7 @@ export interface Transaction {
   splits: Split[];
 }
 
-interface Split {
+export interface Split {
   amount: number;
   categoryId: string;
   disabled: boolean;

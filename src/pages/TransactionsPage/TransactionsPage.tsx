@@ -10,7 +10,7 @@ import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
 import { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
-import calculateAmount from './util/calculateAmount';
+import applyTransactionUpdates from './util/applyTransactionUpdates';
 import useMonthYearParams from './util/useMonthYearParams';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
@@ -54,7 +54,13 @@ const TransactionsPage: FC = () => {
         transactionModalProps.openModal({
           defaultValues: splitIndex === undefined ? transaction : transaction.splits[splitIndex],
           headingLabel: t('editTransaction'),
-          onSubmit: data => handleTransactionUpdate(transaction, data),
+          onSubmit: data => {
+            const updates = applyTransactionUpdates(transaction, splitIndex, data);
+
+            updateTransaction(updates);
+
+            transactionModalProps.closeModal();
+          },
           submitLabel: t('save'),
         });
       } else if (action === 'split') {
@@ -67,6 +73,12 @@ const TransactionsPage: FC = () => {
         deleteModalProps.openModal({
           onDelete: () => handleTransactionDelete(transaction),
         });
+      } else if (action === 'enable' || action === 'disable') {
+        const updates = applyTransactionUpdates(transaction, splitIndex, {
+          disabled: action === 'disable',
+        });
+
+        updateTransaction(updates);
       }
     },
     []
@@ -119,17 +131,6 @@ const TransactionsPage: FC = () => {
       transaction,
       splitIndex,
       data,
-    });
-  };
-
-  const handleTransactionUpdate = (transaction: Transaction, data: TransactionFormValues) => {
-    transactionModalProps.closeModal();
-
-    updateTransaction({
-      ...data,
-      amount: data.amount ? calculateAmount(data.amount) : transaction.amount,
-      date: transaction.date,
-      id: transaction.id,
     });
   };
 

@@ -26,13 +26,13 @@ const Transaction: FC<TransactionProps> = ({ categories, onAction, transaction }
   const combinedTransactions = [transaction, ...splits];
 
   return (
-    <div
-      className={cc({
-        [styles.transaction]: true,
-        [styles.disabled]: isFullyDisabled,
-      })}
-    >
-      <div className={styles.heading}>
+    <div className={styles.transaction}>
+      <div
+        className={cc({
+          [styles.heading]: true,
+          [styles.disabled]: isFullyDisabled,
+        })}
+      >
         <div className={styles.date}>{date.substring(5).replace('-0', '-').replace('-', '/')}</div>
         <div className={styles.description}>{description}</div>
       </div>
