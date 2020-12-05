@@ -11,6 +11,7 @@ interface TransactionItemProps {
   categories: Categories;
   categoryId: string;
   className?: string;
+  disabled: boolean;
   note: string | null;
   onAction: (action: string) => void;
 }
@@ -63,6 +64,7 @@ const TransactionItem: FC<TransactionItemProps> = ({
   categories,
   categoryId,
   className,
+  disabled,
   note,
   onAction,
 }) => {
@@ -82,7 +84,13 @@ const TransactionItem: FC<TransactionItemProps> = ({
     <Swipeable actions={ACTIONS} onAction={onAction}>
       {isTouchDevice => (
         <div
-          className={cc([styles.transactionItem, className])}
+          className={cc([
+            className,
+            {
+              [styles.transactionItem]: true,
+              [styles.disabled]: disabled,
+            },
+          ])}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
