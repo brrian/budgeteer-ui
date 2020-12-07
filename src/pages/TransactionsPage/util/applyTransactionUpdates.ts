@@ -1,9 +1,8 @@
 import { cloneDeep } from 'lodash-es';
 import { Split, Transaction } from '../../../graphql/models';
-import calculateAmount from './calculateAmount';
 
 interface TransactionUpdates {
-  amount?: string;
+  amount?: number;
   categoryId?: string;
   disabled?: boolean;
   note?: string;
@@ -28,8 +27,7 @@ export default function applyTransactionUpdates(
   }
 
   for (const [key, value] of Object.entries(updates)) {
-    transactionItem[key as keyof TransactionUpdates] =
-      key !== 'amount' ? value : calculateAmount(value);
+    transactionItem[key as keyof TransactionUpdates] = value;
   }
 
   return transactionChanges;

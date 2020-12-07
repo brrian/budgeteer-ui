@@ -10,6 +10,7 @@ import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
 import { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
+import applyTransactionSplit from './util/applyTransactionSplit';
 import applyTransactionUpdates from './util/applyTransactionUpdates';
 import useMonthYearParams from './util/useMonthYearParams';
 
@@ -26,6 +27,7 @@ type DeleteModalProps = {
 type TransactionModalProps = {
   defaultValues?: Partial<Transaction>;
   headingLabel: string;
+  maxAmount?: number;
   onSubmit: (data: TransactionFormValues) => void;
   submitLabel: string;
 };
@@ -54,19 +56,17 @@ const TransactionsPage: FC = () => {
         transactionModalProps.openModal({
           defaultValues: splitIndex === undefined ? transaction : transaction.splits[splitIndex],
           headingLabel: t('editTransaction'),
-          onSubmit: data => {
-            const updates = applyTransactionUpdates(transaction, splitIndex, data);
-
-            updateTransaction(updates);
-
-            transactionModalProps.closeModal();
-          },
+          onSubmit: data => handleTransactionModalAction(action, transaction, splitIndex, data),
           submitLabel: t('save'),
         });
       } else if (action === 'split') {
+        const maxAmount =
+          splitIndex === undefined ? transaction.amount : transaction.splits[splitIndex].amount;
+
         transactionModalProps.openModal({
           headingLabel: t('splitTransaction'),
-          onSubmit: data => handleTransactionSplit(transaction, splitIndex ?? null, data),
+          maxAmount,
+          onSubmit: data => handleTransactionModalAction(action, transaction, splitIndex, data),
           submitLabel: t('split'),
         });
       } else if (action === 'delete') {
@@ -100,16 +100,6 @@ const TransactionsPage: FC = () => {
     }
   };
 
-  const toggleBudgetMenu = () => {
-    const newValue = isExpanded.current ? COLLAPSED_HEIGHT : EXPANDED_HEIGHT;
-
-    set({ height: newValue });
-
-    navigator.vibrate?.(70);
-
-    isExpanded.current = !isExpanded.current;
-  };
-
   const handleThemeToggle = (event: ChangeEvent<HTMLInputElement>) => {
     const theme = event.currentTarget.checked ? 'dark' : 'light';
 
@@ -121,17 +111,30 @@ const TransactionsPage: FC = () => {
     console.log('delete transaction...', { transaction });
   };
 
-  const handleTransactionSplit = (
+  const handleTransactionModalAction = (
+    action: 'edit' | 'split',
     transaction: Transaction,
-    splitIndex: number | null,
+    splitIndex: number | undefined = undefined,
     data: TransactionFormValues
   ) => {
-    // eslint-disable-next-line no-console
-    console.log('split transaction...', {
-      transaction,
-      splitIndex,
-      data,
-    });
+    const updates =
+      action === 'edit'
+        ? applyTransactionUpdates(transaction, splitIndex, data)
+        : applyTransactionSplit(transaction, splitIndex, data);
+
+    updateTransaction(updates);
+
+    transactionModalProps.closeModal();
+  };
+
+  const toggleBudgetMenu = () => {
+    const newValue = isExpanded.current ? COLLAPSED_HEIGHT : EXPANDED_HEIGHT;
+
+    set({ height: newValue });
+
+    navigator.vibrate?.(70);
+
+    isExpanded.current = !isExpanded.current;
   };
 
   return (
