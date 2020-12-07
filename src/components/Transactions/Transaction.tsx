@@ -40,7 +40,7 @@ const Transaction: FC<TransactionProps> = ({ categories, onAction, transaction }
         <TransactionItem
           {...item}
           categories={categories}
-          key={index}
+          key={`${item.amount}-${item.categoryId}-${index}`}
           onAction={action => handleSwipeAction(action, index)}
         />
       ))}

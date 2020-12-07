@@ -11,30 +11,32 @@ import calculateAmount from './util/calculateAmount';
 type TransactionModalProps = ModalState<{
   defaultValues?: Partial<Transaction>;
   headingLabel: string;
+  maxAmount?: number;
   onSubmit: (data: TransactionFormValues) => void;
   submitLabel: string;
 }>;
 
 export interface TransactionFormValues {
-  amount: string;
+  amount: number;
   categoryId: string;
-  disabled?: boolean;
-  note?: string;
+  disabled: boolean;
+  note: string;
 }
 
 const TransactionModal: FC<TransactionModalProps> = ({
   defaultValues,
   headingLabel,
-  submitLabel,
+  maxAmount,
   onSubmit,
+  submitLabel,
   ...modalProps
 }) => {
   const formProps = useForm<TransactionFormValues>({
     defaultValues: {
-      amount: defaultValues?.amount ? `${defaultValues.amount.toFixed(2)}` : undefined,
+      amount: defaultValues?.amount,
       categoryId: defaultValues?.categoryId ?? '',
-      disabled: defaultValues?.disabled,
-      note: defaultValues?.note ?? undefined,
+      disabled: defaultValues?.disabled ?? false,
+      note: defaultValues?.note ?? '',
     },
   });
 
@@ -70,8 +72,17 @@ const TransactionModal: FC<TransactionModalProps> = ({
               name="amount"
               placeholder="0.00"
               ref={formProps.register({
+                setValueAs: (value: string) => calculateAmount(value),
                 required: true,
-                validate: value => (isNaN(calculateAmount(value)) ? t('invalidAmount') : true),
+                validate: (value: number) => {
+                  if (isNaN(value)) {
+                    return t('invalidAmount');
+                  } else if (!!maxAmount && value >= maxAmount) {
+                    return t('maxAmount', { value: `${maxAmount.toFixed(2)}` });
+                  }
+
+                  return true;
+                },
               })}
               type="text"
             />

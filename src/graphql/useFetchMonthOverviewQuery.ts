@@ -42,7 +42,6 @@ export default function useFetchMonthOverviewQuery(
                 amount
                 categoryId
                 disabled
-                id
                 note
               }
             }
