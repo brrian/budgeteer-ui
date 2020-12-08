@@ -4,12 +4,14 @@ import BudgetCategories, { BudgetCategoriesPlaceholder } from '../../components/
 import GenericErrorBoundary from '../../components/GenericErrorBoundary';
 import Transactions, { TransactionsPlaceholder } from '../../components/Transactions';
 import { Transaction } from '../../graphql/models';
+import useDeleteTransactionMutation from '../../graphql/useDeleteTransactionMutation';
 import useUpdateTransactionMutation from '../../graphql/useUpdateTransactionMutation';
 import { getTheme, setTheme } from '../../util/helpers/theme';
 import useModal from '../../util/hooks/useModal';
 import useTranslation from '../../util/hooks/useTranslation';
 import { TransactionFormValues } from './TransactionModal';
 import styles from './TransactionsPage.module.scss';
+import applySplitDelete from './util/applySplitDelete';
 import applyTransactionSplit from './util/applyTransactionSplit';
 import applyTransactionUpdates from './util/applyTransactionUpdates';
 import useMonthYearParams from './util/useMonthYearParams';
@@ -38,6 +40,7 @@ const TransactionsPage: FC = () => {
   const { month, year } = useMonthYearParams();
 
   const [updateTransaction] = useUpdateTransactionMutation();
+  const [deleteTransaction] = useDeleteTransactionMutation();
 
   const transactionModalProps = useModal<TransactionModalProps>();
   const deleteModalProps = useModal<DeleteModalProps>();
@@ -71,7 +74,7 @@ const TransactionsPage: FC = () => {
         });
       } else if (action === 'delete') {
         deleteModalProps.openModal({
-          onDelete: () => handleTransactionDelete(transaction),
+          onDelete: () => handleTransactionDelete(transaction, splitIndex),
         });
       } else if (action === 'enable' || action === 'disable') {
         const updates = applyTransactionUpdates(transaction, splitIndex, {
@@ -106,9 +109,16 @@ const TransactionsPage: FC = () => {
     setTheme(theme);
   };
 
-  const handleTransactionDelete = (transaction: Transaction) => {
-    // eslint-disable-next-line no-console
-    console.log('delete transaction...', { transaction });
+  const handleTransactionDelete = (transaction: Transaction, splitIndex?: number) => {
+    if (splitIndex === undefined) {
+      deleteTransaction(transaction);
+    } else {
+      const updates = applySplitDelete(transaction, splitIndex);
+
+      updateTransaction(updates);
+    }
+
+    deleteModalProps.closeModal();
   };
 
   const handleTransactionModalAction = (

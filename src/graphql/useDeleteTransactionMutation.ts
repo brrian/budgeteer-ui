@@ -5,16 +5,16 @@ import { MonthOverview, Transaction } from './models';
 
 type PartialTransaction = Partial<Transaction> & Pick<Transaction, 'id' | 'date'>;
 
-interface UpdateTransactionSnapshot {
+interface DeleteTransactionSnapshot {
   cacheKey: unknown[];
   snapshot: MonthOverview;
 }
 
-export default function useUpdateTransactionMutation(): MutationResultPair<
+export default function useDeleteTransactionMutation(): MutationResultPair<
   Transaction,
   unknown,
   PartialTransaction,
-  UpdateTransactionSnapshot | undefined
+  DeleteTransactionSnapshot | undefined
 > {
   const cache = useQueryCache();
 
@@ -24,10 +24,8 @@ export default function useUpdateTransactionMutation(): MutationResultPair<
     (transaction: PartialTransaction) =>
       client.request(
         gql`
-          mutation UpdateTransaction($transaction: TransactionInput!) {
-            updateTransaction(transaction: $transaction) {
-              __typename
-            }
+          mutation DeleteTransaction($transaction: TransactionInput!) {
+            deleteTransaction(transaction: $transaction)
           }
         `,
         { transaction }
@@ -47,20 +45,13 @@ export default function useUpdateTransactionMutation(): MutationResultPair<
 
             snapshot = { ...prevMonthOverview };
 
-            const oldTransaction = prevMonthOverview.transactions.get(transaction.id);
-
-            if (oldTransaction) {
-              prevMonthOverview.transactions = new Map(prevMonthOverview.transactions);
-              prevMonthOverview.transactions.set(transaction.id, {
-                ...oldTransaction,
-                ...transaction,
-              });
-            }
+            prevMonthOverview.transactions = new Map(prevMonthOverview.transactions);
+            prevMonthOverview.transactions.delete(transaction.id);
 
             return prevMonthOverview;
           });
         } catch (error) {
-          console.error(`Optimistic update for update transaction aborted: ${error.message}`);
+          console.error(`Optimistic update for delete transaction aborted: ${error.message}`);
         }
 
         if (snapshot) {
