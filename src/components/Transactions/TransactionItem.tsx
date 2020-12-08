@@ -5,6 +5,7 @@ import useTranslation from '../../util/hooks/useTranslation';
 import Swipeable from '../Swipeable';
 import PopUpActions from './PopUpActions';
 import styles from './TransactionItem.module.scss';
+import useTransactionActions from './util/useTransactionActions';
 
 interface TransactionItemProps {
   amount: number;
@@ -15,49 +16,6 @@ interface TransactionItemProps {
   note: string | null;
   onAction: (action: string) => void;
 }
-
-const ACTIONS = [
-  {
-    breakpoints: {
-      min: 80,
-      max: 150,
-    },
-    color: 'blue',
-    id: 'split',
-    labelKey: 'split',
-    orientation: 'left',
-  },
-  {
-    breakpoints: {
-      min: 150,
-      max: Infinity,
-    },
-    color: 'green',
-    id: 'edit',
-    labelKey: 'edit',
-    orientation: 'left',
-  },
-  {
-    breakpoints: {
-      min: -150,
-      max: -80,
-    },
-    color: 'purple',
-    id: 'disable',
-    labelKey: 'disable',
-    orientation: 'right',
-  },
-  {
-    breakpoints: {
-      min: -Infinity,
-      max: -150,
-    },
-    color: 'red',
-    id: 'delete',
-    labelKey: 'delete',
-    orientation: 'right',
-  },
-];
 
 const TransactionItem: FC<TransactionItemProps> = ({
   amount,
@@ -70,6 +28,8 @@ const TransactionItem: FC<TransactionItemProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const actions = useTransactionActions(disabled);
+
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -81,7 +41,7 @@ const TransactionItem: FC<TransactionItemProps> = ({
   };
 
   return (
-    <Swipeable actions={ACTIONS} onAction={onAction}>
+    <Swipeable actions={actions} onAction={onAction}>
       {isTouchDevice => (
         <div
           className={cc([
@@ -94,7 +54,7 @@ const TransactionItem: FC<TransactionItemProps> = ({
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {!isTouchDevice && isHovered && <PopUpActions actions={ACTIONS} onAction={onAction} />}
+          {!isTouchDevice && isHovered && <PopUpActions actions={actions} onAction={onAction} />}
           <div>
             {categories.get(categoryId) ?? t('unknownCategory')}
             <div className={styles.note}>{note && ` *${note}*`}</div>
