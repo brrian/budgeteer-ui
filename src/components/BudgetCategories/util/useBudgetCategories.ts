@@ -49,10 +49,14 @@ export default function useBudgetCategories(
 
     // Calculate spending based on transaction category
     transactions.forEach(transaction => {
-      addSpending(transaction.categoryId, transaction.amount);
+      if (!transaction.disabled) {
+        addSpending(transaction.categoryId, transaction.amount);
+      }
 
       for (const split of transaction.splits) {
-        addSpending(split.categoryId, split.amount);
+        if (!split.disabled) {
+          addSpending(split.categoryId, split.amount);
+        }
       }
     });
 
