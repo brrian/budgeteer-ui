@@ -33,7 +33,7 @@ const BudgetCategories: FC<BudgetCategoriesProps> = ({ month, year }) => {
         runningBalance={isCurrentMonth ? group.runningBalance : undefined}
         totalSpending={totalSpending}
       />
-      <Categories categories={categories} date={date} isCurrentMonth={isCurrentMonth} />
+      <Categories categories={categories} isCurrentMonth={isCurrentMonth} />
     </>
   );
 };
