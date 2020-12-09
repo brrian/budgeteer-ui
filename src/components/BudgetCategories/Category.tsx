@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { animated, useSpring } from 'react-spring';
 import styles from './Category.module.scss';
 
 interface CategoryProps {
@@ -11,6 +12,11 @@ interface CategoryProps {
 
 const Category: FC<CategoryProps> = ({ label, limit, monthProgress, percentPerDay, spending }) => {
   const progress = Math.round((spending / limit) * 100);
+
+  const spendingSpring = useSpring({
+    spending,
+    width: `${progress}%`,
+  });
 
   const progressDelta = progress - monthProgress;
 
@@ -28,10 +34,10 @@ const Category: FC<CategoryProps> = ({ label, limit, monthProgress, percentPerDa
   return (
     <div className={styles.category}>
       <div className={styles.progressContainer}>
-        <span
+        <animated.span
           className={styles.progressBar}
           data-color={color}
-          style={{ width: `calc(${progress}% + 1px)` }}
+          style={{ width: spendingSpring.width }}
         />
         {monthProgress < 100 && (
           <span className={styles.dateMarker} style={{ left: `${monthProgress}%` }} />
@@ -39,7 +45,11 @@ const Category: FC<CategoryProps> = ({ label, limit, monthProgress, percentPerDa
       </div>
       <div className={styles.labels}>
         <span>
-          {label}: ${Math.round(spending).toLocaleString()}
+          <animated.span>
+            {spendingSpring.spending.interpolate(
+              value => `${label}: $${Math.round(value).toLocaleString()}`
+            )}
+          </animated.span>
           {monthProgress < 100 && ` (${spendingDeltaLabel})`}
         </span>
         <span>${limit.toLocaleString()}</span>
