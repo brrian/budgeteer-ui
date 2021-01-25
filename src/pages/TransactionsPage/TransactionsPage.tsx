@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, lazy, Suspense, useCallback, useRef } from 'react';
+import React, { ChangeEvent, FC, lazy, Suspense, useCallback, useRef, useState } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories, { BudgetCategoriesPlaceholder } from '../../components/BudgetCategories';
 import GenericErrorBoundary from '../../components/GenericErrorBoundary';
@@ -20,7 +20,8 @@ const DeleteModal = lazy(() => import('./DeleteModal'));
 const TransactionModal = lazy(() => import('./TransactionModal'));
 
 const COLLAPSED_HEIGHT = 40;
-const EXPANDED_HEIGHT = 286;
+const EXPANDED_HEIGHT_BASE = COLLAPSED_HEIGHT + 12 + 2; // Includes margin and border height
+const EXPANDED_HEIGHT_CATEGORY = 58;
 
 type DeleteModalProps = {
   onDelete: () => void;
@@ -47,6 +48,8 @@ const TransactionsPage: FC = () => {
 
   const isExpanded = useRef(false);
   const longPressRef = useRef<number>();
+
+  const [categoriesCount, setCategoriesCount] = useState(0);
 
   const [{ height }, set] = useSpring(() => ({
     config: config.stiff,
@@ -138,7 +141,9 @@ const TransactionsPage: FC = () => {
   };
 
   const toggleBudgetMenu = () => {
-    const newValue = isExpanded.current ? COLLAPSED_HEIGHT : EXPANDED_HEIGHT;
+    const newValue = isExpanded.current
+      ? COLLAPSED_HEIGHT
+      : EXPANDED_HEIGHT_BASE + categoriesCount * EXPANDED_HEIGHT_CATEGORY;
 
     set({ height: newValue });
 
@@ -157,7 +162,7 @@ const TransactionsPage: FC = () => {
         style={{ height }}
       >
         <Suspense fallback={<BudgetCategoriesPlaceholder />}>
-          <BudgetCategories month={month} year={year} />
+          <BudgetCategories month={month} setCategoriesCount={setCategoriesCount} year={year} />
         </Suspense>
       </animated.div>
       <animated.div className={styles.transactions} style={{ top: height }}>

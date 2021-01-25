@@ -1,5 +1,5 @@
 import { isSameMonth, parse } from 'date-fns';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFetchGroupQuery } from '../../graphql';
 import useFetchMonthOverviewQuery from '../../graphql/useFetchMonthOverviewQuery';
 import Categories from './Categories';
@@ -8,10 +8,11 @@ import useBudgetCategories from './util/useBudgetCategories';
 
 interface BudgetCategoriesProps {
   month: number;
+  setCategoriesCount: (count: number) => void;
   year: number;
 }
 
-const BudgetCategories: FC<BudgetCategoriesProps> = ({ month, year }) => {
+const BudgetCategories: FC<BudgetCategoriesProps> = ({ month, setCategoriesCount, year }) => {
   const { data: group } = useFetchGroupQuery();
 
   const {
@@ -19,6 +20,10 @@ const BudgetCategories: FC<BudgetCategoriesProps> = ({ month, year }) => {
   } = useFetchMonthOverviewQuery(month, year);
 
   const categories = useBudgetCategories(budget, transactions);
+
+  useEffect(() => {
+    setCategoriesCount(categories.length);
+  }, [categories]);
 
   const totalSpending = categories.reduce((accTotal, { spending }) => accTotal + spending, 0);
 
