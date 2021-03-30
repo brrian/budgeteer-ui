@@ -11,7 +11,7 @@ interface HeadingProps {
 }
 
 const Heading: FC<HeadingProps> = ({ budgetTotal, date, runningBalance, totalSpending }) => {
-  const spendingSpring = useSpring({ totalSpending });
+  const spendingSpring = useSpring<{ totalSpending: number }>({ totalSpending });
 
   let targetSpending = budgetTotal;
   if (runningBalance) {
@@ -27,7 +27,7 @@ const Heading: FC<HeadingProps> = ({ budgetTotal, date, runningBalance, totalSpe
             value => `$${Math.round(value).toLocaleString()} of ${targetSpending.toLocaleString()}`
           )}
         </animated.span>
-        {runningBalance !== undefined && ` (${runningBalance})`}
+        {runningBalance !== undefined && ` (${Math.round(runningBalance)})`}
       </span>
     </div>
   );
