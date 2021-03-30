@@ -1,4 +1,13 @@
-import React, { ChangeEvent, FC, lazy, Suspense, useCallback, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { animated, config, useSpring } from 'react-spring';
 import BudgetCategories, { BudgetCategoriesPlaceholder } from '../../components/BudgetCategories';
 import GenericErrorBoundary from '../../components/GenericErrorBoundary';
@@ -14,14 +23,11 @@ import styles from './TransactionsPage.module.scss';
 import applySplitDelete from './util/applySplitDelete';
 import applyTransactionSplit from './util/applyTransactionSplit';
 import applyTransactionUpdates from './util/applyTransactionUpdates';
+import getBudgetCategoriesHeight from './util/getBudgetCategoriesHeight';
 import useMonthYearParams from './util/useMonthYearParams';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 const TransactionModal = lazy(() => import('./TransactionModal'));
-
-const COLLAPSED_HEIGHT = 40;
-const EXPANDED_HEIGHT_BASE = COLLAPSED_HEIGHT + 12 + 2; // Includes margin and border height
-const EXPANDED_HEIGHT_CATEGORY = 58;
 
 type DeleteModalProps = {
   onDelete: () => void;
@@ -46,15 +52,21 @@ const TransactionsPage: FC = () => {
   const transactionModalProps = useModal<TransactionModalProps>();
   const deleteModalProps = useModal<DeleteModalProps>();
 
-  const isExpanded = useRef(false);
+  const isExpanded = useRef(true);
   const longPressRef = useRef<number>();
 
   const [categoriesCount, setCategoriesCount] = useState(0);
 
   const [{ height }, set] = useSpring(() => ({
     config: config.stiff,
-    height: COLLAPSED_HEIGHT,
+    height: getBudgetCategoriesHeight(false, categoriesCount),
   }));
+
+  useEffect(() => {
+    const height = getBudgetCategoriesHeight(isExpanded.current, categoriesCount);
+
+    set({ height });
+  }, [categoriesCount]);
 
   const handleTransactionAction = useCallback(
     (action: string, transaction: Transaction, splitIndex?: number) => {
@@ -141,15 +153,13 @@ const TransactionsPage: FC = () => {
   };
 
   const toggleBudgetMenu = () => {
-    const newValue = isExpanded.current
-      ? COLLAPSED_HEIGHT
-      : EXPANDED_HEIGHT_BASE + categoriesCount * EXPANDED_HEIGHT_CATEGORY;
+    isExpanded.current = !isExpanded.current;
 
-    set({ height: newValue });
+    const height = getBudgetCategoriesHeight(isExpanded.current, categoriesCount);
+
+    set({ height });
 
     navigator.vibrate?.(70);
-
-    isExpanded.current = !isExpanded.current;
   };
 
   return (
